@@ -34,6 +34,8 @@ use pocketmine\math\Vector3;
 use pocketmine\block\Block;
 use pocketmine\tile\Tile;
 
+use pocketmine\inventory\DropperInventory;
+
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
@@ -50,7 +52,7 @@ class Main extends PluginBase implements Listener{
     $this->saveResource("/items.yml");
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
     $money->save();
-    $this->getServer()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this,"factoryItems"]),1);
+    $this->getServer()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this,"factory"]),1);
     $this->getLogger()->info(C::GREEN . "Money Data Found!");
   }
 
@@ -61,15 +63,20 @@ class Main extends PluginBase implements Listener{
     $money->save();
   }
 
-  public function factoryItems(){
+  public function factory(){
     $level = $this->getServer()->getDefaultLevel();
     $tiles = $level->getTiles();
     foreach($tiles as $t) {
-      if($t instanceof Dropper) { 
-        $level->dropItem(new Vector3($tile->getX() + 0.5, $tile->getY() + 2, $tile->getZ() + 0.5), Item::get(Item::EMERALD, 0, 1));
+      if($t instanceof Dropper){ 
+        if($t->getInventory() instanceof DropperInventory){
+         for($i=0;$i<=26;$i++)
+          {
+              $t->getInventory()->setItem($i, Item::get(Item::EMERALD, 0, 1));
+          }
     }
   }
   }
+}
 
   public function myMoney($player){
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
