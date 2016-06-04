@@ -50,7 +50,7 @@ class Main extends PluginBase implements Listener{
     $this->saveResource("/items.yml");
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
     $money->save();
-    //$this->getServer()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this,"factoryItems"]),100);
+    $this->getServer()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this,"factoryItems"]),1);
     $this->getLogger()->info(C::GREEN . "Money Data Found!");
   }
 
@@ -62,7 +62,13 @@ class Main extends PluginBase implements Listener{
   }
 
   public function factoryItems(){
-    //todo
+    $level = $this->getServer()->getDefaultLevel();
+    $tiles = $level->getTiles();
+    foreach($tiles as $t) {
+      if($t instanceof Dropper) { 
+        $level->dropItem(new Vector3($tile->getX() + 0.5, $tile->getY() + 2, $tile->getZ() + 0.5), Item::get(Item::EMERALD, 0, 1));
+    }
+  }
   }
 
   public function myMoney($player){
