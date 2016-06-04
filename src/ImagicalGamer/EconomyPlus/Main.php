@@ -18,6 +18,19 @@ use pocketmine\command\{Command, CommandSender};
 use pocketmine\command\ConsoleCommandSender;
 
 use pocketmine\item\Item;
+use pocketmine\tile\Dispenser;
+
+use pocketmine\nbt\tag\ByteTag;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\NBT;
+use pocketmine\nbt\tag\StringTag;
+use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\ListTag;
+
+use pocketmine\math\Vector3;
+
+use pocketmine\block\Block;
+use pocketmine\tile\Tile;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -26,6 +39,8 @@ use pocketmine\item\Item;
  */
 
 class Main extends PluginBase implements Listener{
+
+  private $factory = array();
 
   public function onEnable(){
     @mkdir($this->getDataFolder());
@@ -60,6 +75,26 @@ class Main extends PluginBase implements Listener{
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
     $money->set(strtolower($player),$ammount - $bal);
     $money->save();
+  }
+
+  public function createFactory(Player $player){
+    $pos = new Vector3($player->getX(), $player->getY(), $player->getZ());
+    $x = $player->getX();
+    $y = $player->getY();
+    $z = $player->getZ();
+    $level = $player->getLevel();
+    $level->setBlock($pos, Block::get(125));
+        $nbt = new CompoundTag(" ", [
+            new ListTag("Items", []),
+            new StringTag("id", Tile::SKULL),
+            new IntTag("x", $x),
+            new IntTag("y", $y),
+            new IntTag("z", $z)
+        ]);
+        $block = $player->getLevel()->getBlock($pos);
+        $level = $player->getLevel();
+        $dropper = Tile::createTile("Dropper",$player->getLevel()->getChunk($block->getX() >> 4, $block->getZ() >> 4), $nbt);
+        $level->addTile($dropper);
   }
 
   public function payPlayer($player, $bal, $sender){
@@ -121,14 +156,29 @@ class Main extends PluginBase implements Listener{
   }
     if($cmd->getName() == "sellhand"){
       if($sender instanceof Player){
-        if($sender->getInventory()->getItemInHand()->getId() > 0){
         $item = $sender->getInventory()->getItemInHand();
         $price = $this->checkPrice(str_replace(" ", "_", strtolower($item->getName())));
         $count = count($item->getCount());
-        str_repeat($this->addMoney($sender->getName(), $price), $count);
+        $task = $this->addMoney($sender->getName(), $price);
+        str_repeat($task, $count);
         $sender->getInventory()->setItemInHand(Item::get(0,0,0));
         $sender->sendMessage(C::GREEN . "You sold " . str_replace(" ", "_", strtolower($item->getName())) . " for " . $price . " Coins!");
       }
+      else{
+        $sender->sendMessage(C::RED . "Please run this command in-game!");
+      }
+    }
+    if($cmd->getName() == "factory"){
+      if($sender instanceof Player){
+        //if(in_array($sender->getName(), $this->factory)){
+          $sender->sendMessage(C::RED . "You already have a factory!");
+        //}
+        //else{
+          array_push($this->factory, $sender->getName());
+          $sender->sendMessage(C::GREEN . "Creating Factory...");
+          $this->createFactory($sender);
+       // }
+        
       }
       else{
         $sender->sendMessage(C::RED . "Please run this command in-game!");
