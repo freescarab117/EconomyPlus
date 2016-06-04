@@ -18,12 +18,12 @@ class Translator extends PluginBase implements Listener{
 
   public function translate($msg, $to_lang){
     if(in_array($to_lang, $this->langs)){
-      $langs = new Config($this->getDataFolder() . "/lang.yml", Config::YAML);
+      $msg
     }
   }
 
   public function langs(){
-    $langs = array("english","$french","german","dutch","chinese");
+    $langs = array("english","french","german","dutch","chinese");
     return $langs;
   }
 
