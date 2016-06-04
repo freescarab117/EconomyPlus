@@ -3,4 +3,7 @@
 Default-Money: 1000
 #Money someone earns when they kill another player
 Death-Money: 200
+#Default Language this plugin uses
+#NOTE: NOT IMPLEMENTED YET
+Default-Lang: english
 ...
