@@ -1,11 +1,9 @@
 name: EconomyPlus
 main: ImagicalGamer\EconomyPlus\Main
-version: 0.0.2
+version: 0.1.3
 api: [1.0.0, 2.0.0, 3.0.0]
 author: ImagicalGamer
 commands:
-    economy:
-        description: EconomyPlus Commands!
     addmoney:
         description: EconomyPlus AddMoney!
     bal:
@@ -18,3 +16,5 @@ commands:
         description: EconomyPlus SellHand Command!
     factory:
         description: EconomyPlus Factory Command!
+    payme:
+        description: EconomyPlus PayMe Command!
