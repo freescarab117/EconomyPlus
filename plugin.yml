@@ -14,3 +14,7 @@ commands:
         description: EconomyPlus Pay Command!
     takemoney:
         description: EconomyPlus TakeMoney Command!
+    sellhand:
+        description: EconomyPlus SellHand Command!
+    factory:
+        description: EconomyPlus Factory Command!
