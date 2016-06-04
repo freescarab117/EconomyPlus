@@ -11,7 +11,7 @@ use pocketmine\plugin\Plugin;
 use pocketmine\utils\TextFormat as C;
 use pocketmine\utils\Config;
 
-use pocketmine\scheduler\CallbackTask;
+use pocketmine\scheduler\PluginTask;
 
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerDeathEvent;
@@ -52,7 +52,7 @@ class Main extends PluginBase implements Listener{
     $this->saveResource("/items.yml");
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
     $money->save();
-    $this->getServer()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this,"factory"]),1);
+    $this->getServer()->getScheduler()->scheduleRepeatingTask(new FactoryTask($this), 20);
     $this->getLogger()->info(C::GREEN . "Money Data Found!");
   }
 
@@ -62,21 +62,6 @@ class Main extends PluginBase implements Listener{
     $money->set(strtolower($player),$balence + $bal);
     $money->save();
   }
-
-  public function factory(){
-    $level = $this->getServer()->getDefaultLevel();
-    $tiles = $level->getTiles();
-    foreach($tiles as $t) {
-      if($t instanceof Dropper){ 
-        if($t->getInventory() instanceof DropperInventory){
-         for($i=0;$i<=26;$i++)
-          {
-              $t->getInventory()->setItem($i, Item::get(Item::EMERALD, 0, 1));
-          }
-    }
-  }
-  }
-}
 
   public function myMoney($player){
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
@@ -106,7 +91,7 @@ class Main extends PluginBase implements Listener{
     $level->setBlock($pos, Block::get(125));
         $nbt = new CompoundTag(" ", [
             new ListTag("Items", []),
-            new StringTag("id", Tile::SKULL),
+            new StringTag("id", Tile::DISPENSER),
             new IntTag("x", $x),
             new IntTag("y", $y),
             new IntTag("z", $z)
@@ -225,6 +210,29 @@ class Main extends PluginBase implements Listener{
       $this->payPlayer($player, $bal, $sender->getName());
       $sender->sendMessage(C::GREEN . "Sucessfully payed " . $bal . " Coins to " . $player . "!");
     }
+    }
+  }
+}
+
+class FactoryTask extends PluginTask {
+  public function __construct($plugin)
+  {
+    $this->plugin = $plugin;
+    parent::__construct($plugin);
+  }
+  
+  public function onRun($tick)
+  {
+    $level = $this->plugin->getServer()->getDefaultLevel();
+    $tiles = $level->getTiles();
+    foreach($tiles as $t) {
+      if($t instanceof Dispenser) {  
+       $x = $t->getX();
+       $y = $t->getY();
+       $z = $t->getZ();
+       $pos = new Vector3($x + 0.5, $y + 2, $z + 0.5);
+       $level->dropItem($pos, Item::get(Item::EMERALD, 0, 1));
+      }
     }
   }
 }
