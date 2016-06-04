@@ -151,7 +151,7 @@ class Main extends PluginBase implements Listener{
     }
     }
     }
-  }
+    }
     if($cmd->getName() == "bal"){
       if($sender instanceof Player){
       $cash = $this->myMoney(strtolower($sender->getName()));
@@ -162,7 +162,7 @@ class Main extends PluginBase implements Listener{
       }
   }
     if($cmd->getName() == "sellhand"){
-      if(!$sender instanceof Player){
+      if($sender instanceof Player){
         $item = $sender->getInventory()->getItemInHand();
         $price = $this->checkPrice(str_replace(" ", "_", strtolower($item->getName())));
         if($price == null){
@@ -174,7 +174,7 @@ class Main extends PluginBase implements Listener{
         $amount = $price * $count;
         $this->addMoney($sender->getName() , $amount);
         $sender->getInventory()->setItemInHand(Item::get(0,0,0));
-        $sender->sendMessage(C::GREEN . "You sold " . str_replace(" ", "_", strtolower($item->getName())) . " for " . $price . " Coins!");
+        $sender->sendMessage(C::GREEN . "You sold " . $count . " of " . str_replace(" ", "_", strtolower($item->getName())) . " for " . $price . " Coins!");
       }
       }
       else{
@@ -224,7 +224,7 @@ class Main extends PluginBase implements Listener{
         if(in_array($sender->getName(), $this->factory)){
             $item = $sender->getInventory()->getItemInHand();
             $count = $item->getCount();
-            $amount = 1000 * $count;
+            $amount = rand(500,1000) * $count;
             $this->addMoney($sender->getName() , $amount);
             $sender->sendMessage(C::GREEN . "You have collected your pay!");
             $sender->getInventory()->setItemInHand(Item::get(0,0,0));
