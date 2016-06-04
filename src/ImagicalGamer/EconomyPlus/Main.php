@@ -54,7 +54,7 @@ class Main extends PluginBase implements Listener{
     $this->saveResource("/items.yml");
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
     $money->save();
-    $this->getServer()->getScheduler()->scheduleRepeatingTask(new FactoryTask($this), 20);
+    $this->getServer()->getScheduler()->scheduleRepeatingTask(new FactoryTask($this), 300);
     $this->getLogger()->info(C::GREEN . "Money Data Found!");
   }
 
