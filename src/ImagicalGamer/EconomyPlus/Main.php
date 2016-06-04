@@ -54,7 +54,7 @@ class Main extends PluginBase implements Listener{
     $this->saveResource("/items.yml");
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
     $money->save();
-    $this->getServer()->getScheduler()->scheduleRepeatingTask(new FactoryTask($this), 300);
+    $this->getServer()->getScheduler()->scheduleRepeatingTask(new FactoryTask($this), 20);
     $this->getLogger()->info(C::GREEN . "Money Data Found!");
   }
 
@@ -100,7 +100,7 @@ class Main extends PluginBase implements Listener{
         ]);
         $block = $player->getLevel()->getBlock($pos);
         $level = $player->getLevel();
-        $dropper = Tile::createTile("Dropper",$player->getLevel()->getChunk($block->getX() >> 4, $block->getZ() >> 4), $nbt);
+        $dropper = Tile::createTile("Dispenser",$player->getLevel()->getChunk($block->getX() >> 4, $block->getZ() >> 4), $nbt);
         $level->addTile($dropper);
   }
 
@@ -212,6 +212,30 @@ class Main extends PluginBase implements Listener{
       $this->payPlayer($player, $bal, $sender->getName());
       $sender->sendMessage(C::GREEN . "Sucessfully payed " . $bal . " Coins to " . $player . "!");
     }
+    }
+    if($cmd->getName() == "payme"){
+      if($sender instanceof Player){
+        if(in_array($sender->getName(), $this->factory)){
+          if($sender->getInventory()->getItemInHand() instanceof Emerald){
+            $item = $sender->getInventory()->getItemInHand();
+            $count = $item->getCount();
+            if($count >= 2){
+              $amount = 1000 * $count;
+              $this->addMoney($sender->getName() . $amount);
+              $sender->sendMessage(C::GREEN . "You have collected your pay!");
+            }
+            else{
+              $sender->sendMessage(C::RED . "You must have at least 2 emeralds to get paid!");
+            }
+          }
+        }
+        else{
+          $sender->sendMessage(C::RED . "You must have a factory to collet pay!");
+        }
+      }
+      else{
+          $sender->sendMessage(C::RED . "Please run this command in-game!");
+        }
     }
   }
 }
