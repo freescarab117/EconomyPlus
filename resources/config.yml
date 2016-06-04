@@ -1,0 +1,9 @@
+---
+#Money a player starts out with
+Default-Money: 1000
+#Money someone earns when they kill another player
+Death-Money: 200
+#Optional Featues
+#Jobs - Players can earn money over time!
+Enable-Jobs: true
+...
