@@ -1,2 +1,3 @@
 # EconomyPlus
-Ultimate Economy Plugin!
+
+View the Wikia for avdanced API usage!
