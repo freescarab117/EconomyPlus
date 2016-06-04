@@ -36,6 +36,8 @@ use pocketmine\tile\Tile;
 
 use pocketmine\inventory\DropperInventory;
 
+use ImagicalGamer\EconomyPlus\FactoryTask;
+
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
@@ -210,29 +212,6 @@ class Main extends PluginBase implements Listener{
       $this->payPlayer($player, $bal, $sender->getName());
       $sender->sendMessage(C::GREEN . "Sucessfully payed " . $bal . " Coins to " . $player . "!");
     }
-    }
-  }
-}
-
-class FactoryTask extends PluginTask {
-  public function __construct($plugin)
-  {
-    $this->plugin = $plugin;
-    parent::__construct($plugin);
-  }
-  
-  public function onRun($tick)
-  {
-    $level = $this->plugin->getServer()->getDefaultLevel();
-    $tiles = $level->getTiles();
-    foreach($tiles as $t) {
-      if($t instanceof Dispenser) {  
-       $x = $t->getX();
-       $y = $t->getY();
-       $z = $t->getZ();
-       $pos = new Vector3($x + 0.5, $y + 2, $z + 0.5);
-       $level->dropItem($pos, Item::get(Item::EMERALD, 0, 1));
-      }
     }
   }
 }
