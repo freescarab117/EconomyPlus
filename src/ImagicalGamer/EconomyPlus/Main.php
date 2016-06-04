@@ -42,8 +42,8 @@ class Main extends PluginBase implements Listener{
 
   public function getMoney($player){
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
-    $ammount = $money->get(strtolower($player));
-    return $ammount;
+    $amount = $money->get(strtolower($player));
+    return $amount;
   }
 
   public function subtractMoney($player, $bal){
