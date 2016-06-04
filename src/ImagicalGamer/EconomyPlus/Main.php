@@ -54,7 +54,7 @@ class Main extends PluginBase implements Listener{
     $this->saveResource("/items.yml");
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
     $money->save();
-    $this->getServer()->getScheduler()->scheduleRepeatingTask(new FactoryTask($this), 300);
+    $this->getServer()->getScheduler()->scheduleRepeatingTask(new FactoryTask($this), 700);
     $this->getLogger()->info(C::GREEN . "Money Data Found!");
   }
 
@@ -166,8 +166,9 @@ class Main extends PluginBase implements Listener{
         $item = $sender->getInventory()->getItemInHand();
         $price = $this->checkPrice(str_replace(" ", "_", strtolower($item->getName())));
         $count = count($item->getCount());
-        $task = $this->addMoney($sender->getName(), $price);
-        str_repeat($task, $count);
+        $count = $item->getCount();
+        $amount = $price * $count;
+        $this->addMoney($sender->getName() , $amount);
         $sender->getInventory()->setItemInHand(Item::get(0,0,0));
         $sender->sendMessage(C::GREEN . "You sold " . str_replace(" ", "_", strtolower($item->getName())) . " for " . $price . " Coins!");
       }
@@ -214,20 +215,16 @@ class Main extends PluginBase implements Listener{
     }
     }
     if($cmd->getName() == "payme"){
-      if(!$sender instanceof Player){
+      if($sender instanceof Player){
         if(in_array($sender->getName(), $this->factory)){
             $item = $sender->getInventory()->getItemInHand();
             $count = $item->getCount();
-            if($count >= 2){
-              $amount = 1000 * $count;
-              $this->addMoney($sender->getName() . $amount);
-              $sender->sendMessage(C::GREEN . "You have collected your pay!");
-            }
-            else{
-              $sender->sendMessage(C::RED . "You must have at least 2 emeralds to get paid!");
-            }
+            $amount = 1000 * $count;
+            $this->addMoney($sender->getName() , $amount);
+            $sender->sendMessage(C::GREEN . "You have collected your pay!");
+            $sender->getInventory()->setItemInHand(Item::get(0,0,0));
           }
-                  else{
+          else{
           $sender->sendMessage(C::RED . "You must have a factory to collet pay!");
         }
         }
