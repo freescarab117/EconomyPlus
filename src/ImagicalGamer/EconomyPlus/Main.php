@@ -11,6 +11,8 @@ use pocketmine\plugin\Plugin;
 use pocketmine\utils\TextFormat as C;
 use pocketmine\utils\Config;
 
+use pocketmine\scheduler\CallbackTask;
+
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 
@@ -48,6 +50,7 @@ class Main extends PluginBase implements Listener{
     $this->saveResource("/items.yml");
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
     $money->save();
+    //$this->getServer()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this,"factoryItems"]),100);
     $this->getLogger()->info(C::GREEN . "Money Data Found!");
   }
 
@@ -56,6 +59,10 @@ class Main extends PluginBase implements Listener{
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
     $money->set(strtolower($player),$balence + $bal);
     $money->save();
+  }
+
+  public function factoryItems(){
+    //todo
   }
 
   public function myMoney($player){
@@ -170,14 +177,14 @@ class Main extends PluginBase implements Listener{
     }
     if($cmd->getName() == "factory"){
       if($sender instanceof Player){
-        //if(in_array($sender->getName(), $this->factory)){
+        if(in_array($sender->getName(), $this->factory)){
           $sender->sendMessage(C::RED . "You already have a factory!");
-        //}
-        //else{
+        }
+        else{
           array_push($this->factory, $sender->getName());
           $sender->sendMessage(C::GREEN . "Creating Factory...");
           $this->createFactory($sender);
-       // }
+        }
         
       }
       else{
