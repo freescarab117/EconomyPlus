@@ -162,7 +162,7 @@ class Main extends PluginBase implements Listener{
       }
   }
     if($cmd->getName() == "sellhand"){
-      if($sender instanceof Player){
+      if(!$sender instanceof Player){
         $item = $sender->getInventory()->getItemInHand();
         $price = $this->checkPrice(str_replace(" ", "_", strtolower($item->getName())));
         $count = count($item->getCount());
@@ -214,9 +214,8 @@ class Main extends PluginBase implements Listener{
     }
     }
     if($cmd->getName() == "payme"){
-      if($sender instanceof Player){
+      if(!$sender instanceof Player){
         if(in_array($sender->getName(), $this->factory)){
-          if($sender->getInventory()->getItemInHand() instanceof Emerald){
             $item = $sender->getInventory()->getItemInHand();
             $count = $item->getCount();
             if($count >= 2){
@@ -228,14 +227,13 @@ class Main extends PluginBase implements Listener{
               $sender->sendMessage(C::RED . "You must have at least 2 emeralds to get paid!");
             }
           }
-        }
-        else{
+                  else{
           $sender->sendMessage(C::RED . "You must have a factory to collet pay!");
         }
-      }
-      else{
+        }
+              else{
           $sender->sendMessage(C::RED . "Please run this command in-game!");
         }
+      }
     }
   }
-}
