@@ -165,12 +165,17 @@ class Main extends PluginBase implements Listener{
       if(!$sender instanceof Player){
         $item = $sender->getInventory()->getItemInHand();
         $price = $this->checkPrice(str_replace(" ", "_", strtolower($item->getName())));
+        if($price == null){
+          $sender->sendMessage(C::RED . "That Item doesnt have a price!");
+        }
+        else{
         $count = count($item->getCount());
         $count = $item->getCount();
         $amount = $price * $count;
         $this->addMoney($sender->getName() , $amount);
         $sender->getInventory()->setItemInHand(Item::get(0,0,0));
         $sender->sendMessage(C::GREEN . "You sold " . str_replace(" ", "_", strtolower($item->getName())) . " for " . $price . " Coins!");
+      }
       }
       else{
         $sender->sendMessage(C::RED . "Please run this command in-game!");
