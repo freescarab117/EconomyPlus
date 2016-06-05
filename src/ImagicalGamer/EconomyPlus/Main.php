@@ -58,26 +58,26 @@ class Main extends PluginBase implements Listener{
     $this->getLogger()->info(C::GREEN . "Money Data Found!");
   }
 
-  public function addMoney($player, $bal){
+  public function addMoney(string $player, float $bal){
     $balence = $this->myMoney($player);
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
     $money->set(strtolower($player),$balence + $bal);
     $money->save();
   }
 
-  public function myMoney($player){
+  public function myMoney(string $player): float{
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
     $amount = $money->get(strtolower($player));
     return $amount;
   }
 
-  public function checkPrice($item){
+  public function checkPrice(string $item): float{
     $items = new Config($this->getDataFolder() . "/items.yml", Config::YAML);
     $price = $items->get(strtolower($item));
     return $price;
   }
 
-  public function subtractMoney($player, $bal){
+  public function subtractMoney(string $player, float $bal){
     $ammount = $this->myMoney($player);
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
     $money->set(strtolower($player),$ammount - $bal);
@@ -104,7 +104,7 @@ class Main extends PluginBase implements Listener{
         $level->addTile($dropper);
   }
 
-  public function payPlayer($player, $bal, $sender){
+  public function payPlayer(string $player, float $bal, string $sender){
     if($this->myMoney($sender) >= $bal){
       $this->addMoney($player, $bal);
       $this->subtractMoney($sender, $bal);
