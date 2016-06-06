@@ -131,6 +131,10 @@ class Main extends PluginBase implements Listener{
       $this->addMoney($cause->getName,$def);
       $cause->sendMessage(C::GREEN . "You earned " . $def . " Coins!");
     }
+    if($entity instanceof Player){
+      $amount = $this->myMoney($entity->getName()) / 0.05;
+      $this->subtractMoney($entity->getName(), $amount);
+    }
   }
 
   public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
@@ -199,14 +203,29 @@ class Main extends PluginBase implements Listener{
     }
     if($cmd->getName() == "takemoney"){
       if($sender->isOp()){
+        if(count($args) < 2){
+          $sender->sendMessage(C::RED . "Usage: /takemoney <player> <amount>");
+        }
+        else{
         $player = strtolower($args[0]);
         $bal = $args[1];
         $this->subtractMoney($player, $bal);
         $sender->sendMessage(C::GREEN . "Taken $" . $bal . " from " . $player . "!");
       }
+    }
       else{
         $sender->sendMessage(C::RED . "You dont have permission to use this command!");
       }
+    }
+    if($cmd->getName() == "debt"){
+      if($sender instanceof Player){
+        if($this->myMoney($sender->getName()) < 0){
+        $sender->sendMessage(C::RED . "You are " . $this->myMoney($sender->getName()) . " Coins in Debt!");
+      }
+      else{
+        $sender->sendMessage(C::GREEN . "Your not in debt!");
+      }
+    }
     }
     if($cmd->getName() == "pay"){
       if(count($args) < 2){
