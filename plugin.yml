@@ -18,3 +18,5 @@ commands:
         description: EconomyPlus Factory Command!
     payme:
         description: EconomyPlus PayMe Command!
+    debt:
+        description: EconomyPlus Debt Command!
