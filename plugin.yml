@@ -20,3 +20,7 @@ commands:
         description: EconomyPlus PayMe Command!
     debt:
         description: EconomyPlus Debt Command!
+    redeem:
+        description: EconomyPlus Redeem Command!
+    slots:
+        description: EconomyPlus Slots Command!
