@@ -114,8 +114,8 @@ class Main extends PluginBase implements Listener{
   public function onJoin(PlayerJoinEvent $event){
     $player = $event->getPlayer();
     $money = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
-    $def = $money->get("Default-Money");
-    if($money->get($player->getName()) == null){
+    $def = 1000;
+    if($money->get(strtolower($player->getName())) == null){
       $money->set(strtolower($player->getName()),$def);
       $money->save();
     }
@@ -256,5 +256,47 @@ class Main extends PluginBase implements Listener{
           $sender->sendMessage(C::RED . "Please run this command in-game!");
         }
       }
+
+              if($cmd->getName() == "redeem"){
+      if($sender instanceof Player){
+        if($sender->getInventory()->getItemInHand()->getName() == C::GREEN . C::BOLD . "GiftCard"){
+          $amount = rand(500,2000);
+          $this->addMoney($sender->getName(), $amount);
+          $sender->getInventory()->setItemInHand(Item::get(0,0,0));
+          $sender->sendMessage(C::GREEN . "You have redeemed a GiftCard for " . $amount . " Coins!");
+        }
+        else{
+          $sender->sendMessage(C::RED . "Your not holding a GiftCard!");
+        }
+      }
+      else{
+        $sender->sendMessage(C::RED . "Please run this command in-game!");
+      }
+    }
+
+        if($cmd->getName() == "slots"){
+      if($sender instanceof Player){
+        $price = 25;
+        if($this->myMoney($sender->getName()) >= $price){
+          $sender->sendMessage(C::GREEN . "Your Playing Slots!");
+          sleep(1);
+          $sender->sendMessage(C::RED . C::BOLD . "3");
+          sleep(1);
+          $sender->sendMessage(C::RED . C::BOLD . "2");
+          sleep(1);
+          $sender->sendMessage(C::RED . C::BOLD . "1");
+          $this->subtractMoney($sender->getName(), $price);
+          $prize = rand(1,500);
+          $sender->sendMessage(C::GREEN . "You won " . C::YELLOW . $prize . C::GREEN . " Coins playing EconomyPlus Slots!");
+          $this->addMoney($sender->getName(),$prize);
+        }
+        else{
+          $sender->sendMessage(C::RED . "It cost 25 Coins to play Slots!");
+        }
+      }
+      else{
+        $sender->sendMessage(C::RED . "Please run this command in-game!");
+      }
+    }
     }
   }
