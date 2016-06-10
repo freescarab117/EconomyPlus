@@ -242,11 +242,16 @@ class Main extends PluginBase implements Listener{
       if($sender instanceof Player){
         if(in_array($sender->getName(), $this->factory)){
             $item = $sender->getInventory()->getItemInHand();
+            if($item->getId() == 388){
             $count = $item->getCount();
             $amount = rand(500,1000) * $count;
             $this->addMoney($sender->getName() , $amount);
-            $sender->sendMessage(C::GREEN . "You have collected your pay!");
+            $sender->sendMessage(C::GREEN . "You Have Sold " . $count . "Emeralds For " . $amount . " Coins!");
             $sender->getInventory()->setItemInHand(Item::get(0,0,0));
+            }
+            else{
+              $sender->sendMessage(C::RED . "Your not holding emeralds!");
+            }
           }
           else{
           $sender->sendMessage(C::RED . "You must have a factory to collet pay!");
