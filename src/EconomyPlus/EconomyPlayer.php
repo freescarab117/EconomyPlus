@@ -9,6 +9,7 @@ use pocketmine\plugin\Plugin;
 use EconomyPlus\Main;
 
 use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat as C;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -33,8 +34,10 @@ class EconomyPlayer extends PluginBase{
     $money = $this->getMoney();
     if($money > $ammount){
       $this->setMoney($money - $ammount);
+      return true;
     }
     else{
+      $this->plugin->getLogger()->warning(C::RED . "Invalid Ammount!");
       return false;
     }
   }
@@ -58,5 +61,10 @@ class EconomyPlayer extends PluginBase{
 
   public function sendMessage(String $message){
     $this->plugin->getServer()->getPlayer($this->player)->sendMessage($message);
+  }
+
+  public function pay(int $ammount, String $payer){
+    $this->addMoney($ammount);
+    $this->sendMessage(C::YELLOW . $payer . C::GREEN . " has payed you $" . C::YELLOW . $ammount);
   }
 }

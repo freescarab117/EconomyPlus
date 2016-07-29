@@ -11,7 +11,11 @@ use pocketmine\plugin\Plugin;
 use pocketmine\utils\TextFormat as C;
 use pocketmine\utils\Config;
 
+
 use EconomyPlus\Commands\BalanceCommand;
+use EconomyPlus\Commands\AddMoneyCommand;
+use EconomyPlus\Commands\TakeMoneyCommand;
+use EconomyPlus\Commands\PayMoneyCommand;
 use EconomyPlus\EventListener;
 use EconomyPlus\Language\Language;
 
@@ -30,11 +34,11 @@ class Main extends PluginBase implements Listener{
   public function onEnable(){
     @mkdir($this->getDataFolder());
     $this->saveResource("/config.yml");
+    $this->registerCommands();
     $this->getServer()->getPluginManager()->registerEvents($this ,$this);
-    $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
-    $this->getServer()->getCommandMap()->register("bal", new BalanceCommand($this));
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $this->getLogger()->info(C::GREEN . "Enabled!");
+    $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
   }
 
   public function translate(String $message, String $lang = "eng"){
@@ -45,5 +49,13 @@ class Main extends PluginBase implements Listener{
     else{
       return null;
     }
+  }
+
+  public function registerCommands(){
+    $this->getServer()->getCommandMap()->register("bal", new BalanceCommand($this));
+    $this->getServer()->getCommandMap()->register("addmoney", new AddMoneyCommand($this));
+    $this->getServer()->getCommandMap()->register("takemoney", new TakeMoneyCommand($this));
+    $this->getServer()->getCommandMap()->register("pay", new PayMoneyCommand($this));
+    return;
   }
 }
