@@ -1,7 +1,0 @@
----
-#Set the prices for items here if you have /sellhand enabled!
-#Use _ to replaces spaces! Dont do Diamond Block! Do diamond_block!
-#Example:
-#Item Name: price
-dirt: 5
-...
