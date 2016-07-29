@@ -1,0 +1,522 @@
+<?php define("pocketmine\\PATH", "phar://". __FILE__ ."/"); require_once("phar://". __FILE__ ."/src/pocketmine/PocketMine.php");  __HALT_COMPILER(); ?>
+T                    LICENSE/  VÔ›W/  Ïç¼v¶         resources/config.ymlm  VÔ›Wm  c­Lå¶         resources/items.yml®   VÔ›W®   Ø×Æ¶      ,   src/EconomyPlus/Commands/PayMoneyCommand.php¨  VÔ›W¨  Ã!è¶      -   src/EconomyPlus/Commands/TakeMoneyCommand.phpQ  VÔ›WQ  køAs¶      +   src/EconomyPlus/Commands/BalanceCommand.php[  VÔ›W[  ´6ä	¶      ,   src/EconomyPlus/Commands/AddMoneyCommand.php§  VÔ›W§  sÈ+Ð¶      *   src/EconomyPlus/Commands/UpdateCommand.phpå  VÔ›Wå  „ f¶      !   src/EconomyPlus/EconomyPlayer.phpQ  VÔ›WQ  œV§Q¶      %   src/EconomyPlus/Language/Language.php½  VÔ›W½  =Ä%¶         src/EconomyPlus/Main.php­
+  VÔ›W­
+  ü¼ïˆ¶      !   src/EconomyPlus/EventListener.phpV  VÔ›WV  À¸I„¶      )   src/EconomyPlus/BaseFiles/BaseCommand.phpü  VÔ›Wü  68Î¶      
+   plugin.ymlh   VÔ›Wh   :±ý¶      The MIT License (MIT)
+
+Copyright (c) 2016 Jake
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+---
+# EconomyPlus Config File
+
+# Money a player starts out with
+Default-Money: 1000
+
+# Money someone earns when they kill another player
+Death-Money: 200
+
+# Default Language this plugin uses
+Default-Lang: "eng"
+
+# Enable Commands
+bal-Command: true
+addmoney-Command: true
+takemoney-Command: true
+pay-Command: true
+
+# Current Version DO NOT CHANGE!
+Version: 0.1.2
+...---
+#Set the prices for items here if you have /sellhand enabled!
+#Use _ to replaces spaces! Dont do Diamond Block! Do diamond_block!
+#Example:
+#Item Name: price
+dirt: 5
+...
+<?php
+namespace EconomyPlus\Commands;
+
+use EconomyPlus\BaseFiles\BaseCommand;
+use EconomyPlus\Main;
+use pocketmine\Player;
+use pocketmine\command\CommandSender;
+
+use pocketmine\utils\TextFormat as C;
+
+use EconomyPlus\EconomyPlayer;
+
+/* Copyright (C) ImagicalGamer - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ */
+
+class PayMoneyCommand extends BaseCommand{
+
+    private $plugin;
+
+    public function __construct(Main $plugin){
+        parent::__construct("pay", $plugin);
+        $this->plugin = $plugin;
+        $this->setUsage(C::RED . "/pay <player> <ammount>");
+        $this->setDescription("Take money from a player!");
+    }
+
+    public function execute(CommandSender $sender, $commandLabel, array $args) {
+        if(!$sender->isOp()){
+            $sender->sendMessage(C::RED . "You dont have permission to use this command");
+            return;
+        }
+        if(!count($args) == 2){
+            $sender->sendMessage(C::RED . "Usage: /pay <player> <ammount>");
+            return;
+        }
+        if(strtolower($sender->getName()) === strtolower($args[1])){
+            $sender->sendMessage(C::RED . "Invalid Player");
+        }
+        if(!is_numeric($args[1])){
+            $sender->sendMessage(C::RED . "Invalid ammount");
+            return;
+        }
+        $player = new EconomyPlayer($this->plugin, $args[0]);
+        $player->pay($args[1], $sender->getName());
+        $sender->sendMessage(C::GREEN . "Payed $" . C::YELLOW . $args[1] . C::GREEN . " to " . C::YELLOW . $args[0]);
+    }
+}<?php
+namespace EconomyPlus\Commands;
+
+use EconomyPlus\BaseFiles\BaseCommand;
+use EconomyPlus\Main;
+use pocketmine\Player;
+use pocketmine\command\CommandSender;
+
+use pocketmine\utils\TextFormat as C;
+
+use EconomyPlus\EconomyPlayer;
+
+/* Copyright (C) ImagicalGamer - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ */
+
+class TakeMoneyCommand extends BaseCommand{
+
+    private $plugin;
+
+    public function __construct(Main $plugin){
+        parent::__construct("takemoney", $plugin);
+        $this->plugin = $plugin;
+        $this->setUsage(C::RED . "/takemoney <player> <ammount>");
+        $this->setDescription("Take money from a player!");
+    }
+
+    public function execute(CommandSender $sender, $commandLabel, array $args) {
+        if(!$sender->isOp()){
+            $sender->sendMessage(C::RED . "You dont have permission to use this command");
+            return;
+        }
+        if(!count($args) == 2){
+            $sender->sendMessage(C::RED . "Usage: /takemoney <player> <ammount>");
+            return;
+        }
+        if(!is_numeric($args[1])){
+            $sender->sendMessage(C::RED . "Invalid ammount");
+            return;
+        }
+        $player = new EconomyPlayer($this->plugin, $args[0]);
+        if($player->subtractMoney($args[1]) == true){
+        $sender->sendMessage(C::GREEN . "Taken $" . C::YELLOW . $args[1] . C::GREEN . " from " . C::YELLOW . $args[0]);
+        return true;
+        }
+    }
+}<?php
+namespace EconomyPlus\Commands;
+
+use EconomyPlus\BaseFiles\BaseCommand;
+use EconomyPlus\Main;
+use pocketmine\Player;
+use pocketmine\command\CommandSender;
+
+use pocketmine\utils\TextFormat as C;
+
+use EconomyPlus\EconomyPlayer;
+
+/* Copyright (C) ImagicalGamer - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ */
+
+class BalanceCommand extends BaseCommand{
+
+    private $plugin;
+
+    public function __construct(Main $plugin){
+        parent::__construct("bal", $plugin);
+        $this->plugin = $plugin;
+        $this->setUsage(C::RED . "/bal <player>");
+        $this->setDescription("Check your money balance!");
+    }
+
+    public function execute(CommandSender $sender, $commandLabel, array $args) {
+    	if($sender instanceof Player){
+    		$player = new EconomyPlayer($this->plugin, $sender->getName());
+    		$player->sendMessage($this->plugin->translate(C::GREEN . "You have $" . $player->getMoney(), "balance"));
+    	}
+    }
+}<?php
+namespace EconomyPlus\Commands;
+
+use EconomyPlus\BaseFiles\BaseCommand;
+use EconomyPlus\Main;
+use pocketmine\Player;
+use pocketmine\command\CommandSender;
+
+use pocketmine\utils\TextFormat as C;
+
+use EconomyPlus\EconomyPlayer;
+
+/* Copyright (C) ImagicalGamer - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ */
+
+class AddMoneyCommand extends BaseCommand{
+
+    private $plugin;
+
+    public function __construct(Main $plugin){
+        parent::__construct("addmoney", $plugin);
+        $this->plugin = $plugin;
+        $this->setUsage(C::RED . "/addmoney <player> <ammount>");
+        $this->setDescription("Add money to a player!");
+    }
+
+    public function execute(CommandSender $sender, $commandLabel, array $args) {
+        if(!$sender->isOp()){
+            $sender->sendMessage(C::RED . "You dont have permission to use this command");
+            return;
+        }
+        if(!count($args) == 2){
+            $sender->sendMessage(C::RED . "Usage: /addmoney <player> <ammount>");
+            return;
+        }
+            $player = new EconomyPlayer($this->plugin, $args[0]);
+            $player->addMoney($args[1]);
+            $sender->sendMessage(C::GREEN . "Added $" . C::YELLOW . $args[1] . C::GREEN . " to " . C::YELLOW . $args[0]);
+        }
+    }<?php
+namespace EconomyPlus\Commands;
+
+use EconomyPlus\BaseFiles\BaseCommand;
+use EconomyPlus\Main;
+use pocketmine\Player;
+use pocketmine\command\CommandSender;
+
+use pocketmine\utils\TextFormat as C;
+
+use EconomyPlus\EconomyPlayer;
+
+/* Copyright (C) ImagicalGamer - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ */
+
+class UpdateCommand extends BaseCommand{
+
+    private $plugin;
+
+    public function __construct(Main $plugin){
+        parent::__construct("update", $plugin);
+        $this->plugin = $plugin;
+    }
+
+    public function execute(CommandSender $sender, $commandLabel, array $args) {
+        if(!$sender instanceof Player){
+            $this->plugin->update();
+            return;
+        }
+        else{
+            $sender->sendMessage(C::RED . "Please run this command from console!");
+        }
+    }
+}<?php
+namespace EconomyPlus;
+
+use pocketmine\Player;
+
+use pocketmine\plugin\PluginBase;
+use pocketmine\plugin\Plugin;
+
+use EconomyPlus\Main;
+
+use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat as C;
+
+/* Copyright (C) ImagicalGamer - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ */
+
+class EconomyPlayer extends PluginBase{
+
+  public function __construct(Main $plugin, String $player, $hasFile = null){
+    $this->plugin = $plugin;
+    $this->player = $player;
+    $this->hasFile = $hasFile;
+    $this->cfg = new Config($this->plugin->getDataFolder() . "/players.yml", Config::YAML);
+  }
+
+  public function getMoney(){
+    return $this->cfg->get(strtolower($this->player));
+  }
+
+  public function subtractMoney(int $ammount){
+    $money = $this->getMoney();
+    if($money > $ammount){
+      $this->setMoney($money - $ammount);
+      return true;
+    }
+    else{
+      $this->plugin->getLogger()->warning(C::RED . "Invalid Ammount!");
+      return false;
+    }
+  }
+
+  public function setMoney(int $ammount){
+    $this->cfg->set(strtolower($this->player), round($ammount));
+    $this->cfg->save();
+    return true;
+  }
+
+  public function addMoney(int $ammount){
+    $this->setMoney($ammount + $this->getMoney());
+    return true;
+  }
+
+  public function newPlayer(){
+    $this->cfg->set(strtolower($this->player), $this->plugin->cfg->get("Default-Money"));
+    $this->cfg->save();
+    return true;
+  }
+
+  public function sendMessage(String $message){
+    $this->plugin->getServer()->getPlayer($this->player)->sendMessage($message);
+  }
+
+  public function pay(int $ammount, String $payer){
+    $this->addMoney($ammount);
+    $this->sendMessage(C::YELLOW . $payer . C::GREEN . " has payed you $" . C::YELLOW . $ammount);
+  }
+}<?php
+namespace EconomyPlus\Language;
+
+use pocketmine\Player;
+
+use pocketmine\plugin\PluginBase;
+use pocketmine\plugin\Plugin;
+
+use EconomyPlus\Main;
+
+use pocketmine\utils\Config;
+
+/* Copyright (C) ImagicalGamer - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ */
+
+class Language extends PluginBase{
+
+  public function __construct(Main $plugin, String $message, String $lang = "eng", String $type = null){
+    $this->plugin = $plugin;
+    $this->message = $message;
+    $this->lang = $lang;
+  }
+
+  public function translate(){
+    return $this->message;
+  }
+}<?php
+namespace EconomyPlus;
+
+use pocketmine\Player;
+use pocketmine\Server;
+
+use pocketmine\plugin\PluginBase;
+use pocketmine\event\Listener;
+use pocketmine\plugin\Plugin;
+
+use pocketmine\utils\TextFormat as C;
+use pocketmine\utils\Config;
+
+
+use EconomyPlus\Commands\BalanceCommand;
+use EconomyPlus\Commands\AddMoneyCommand;
+use EconomyPlus\Commands\TakeMoneyCommand;
+use EconomyPlus\Commands\PayMoneyCommand;
+use EconomyPlus\Commands\UpdateCommand;
+use EconomyPlus\EventListener;
+use EconomyPlus\Language\Language;
+
+/* Copyright (C) ImagicalGamer - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ */
+
+class Main extends PluginBase implements Listener{
+
+  protected $api;
+
+  protected $lang = array("eng");
+
+  public function onEnable(){
+    ini_set("extension", "extension=php_openssl.dll");
+    $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
+    $this->hasUpdates();
+    @mkdir($this->getDataFolder());
+    $this->saveResource("/config.yml");
+    $this->registerCommands();
+    $this->getServer()->getPluginManager()->registerEvents($this ,$this);
+    $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+    $this->getLogger()->info(C::GREEN . "Enabled!");
+  }
+
+  public function translate(String $message, String $lang = "eng", String $type){
+    if(in_array($lang, $this->lang)){
+      $translator = new Language($this, $message, $lang);
+      return $translator->translate();
+    }
+    else{
+      return null;
+    }
+  }
+
+  public function registerCommands(){
+    if($this->isCommandEnabled("bal") == true){
+      $this->getServer()->getCommandMap()->register("bal", new BalanceCommand($this));
+    }
+    if($this->isCommandEnabled("addmoney") == true){
+      $this->getServer()->getCommandMap()->register("addmoney", new AddMoneyCommand($this));
+    }
+    if($this->isCommandEnabled("takemoney") == true){
+      $this->getServer()->getCommandMap()->register("takemoney", new TakeMoneyCommand($this));
+    }
+    if($this->isCommandEnabled("pay") == true){
+      $this->getServer()->getCommandMap()->register("pay", new PayMoneyCommand($this));
+    }
+    $this->getServer()->getCommandMap()->register("update", new UpdateCommand($this));
+    return;
+  }
+
+  public function isCommandEnabled(String $cmd){
+    if($this->cfg->get($cmd . "-Command") == true){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  public function hasUpdates(){
+
+    $version = $this->cfg->get("Version");
+    $nversion = file_get_contents("https://raw.githubusercontent.com/ImagicalGamer/EconomyPlus/master/resources/version");
+    if($nversion > $version){
+      $this->getLogger()->info(C::YELLOW . "An EconomyPlus Update Has Been Found! Run the /update Command to update EconomyPlus!");
+      return true;
+    }
+    return false;
+  }
+
+  public function update(bool $true = true){
+    $version = file_get_contents("https://raw.githubusercontent.com/ImagicalGamer/EconomyPlus/master/resources/version");
+    $oldversion = $this->cfg->get("Version");
+    if($true === true){
+      unlink($this->getServer()->getDataPath() . "/plugins/EconomyPlus_v" . $oldversion . ".phar");
+      copy("https://raw.githubusercontent.com/ImagicalGamer/EconomyPlus/master/releases/EconomyPlus_v" . $version . ".phar", $this->getServer()->getDataPath() . "plugins/EconomyPlus_v" . $version . ".phar");
+    }
+  }
+}<?php
+namespace EconomyPlus;
+
+use pocketmine\event\Listener;
+use pocketmine\plugin\PluginBase;
+
+use pocketmine\Server;
+use pocketmine\Player;
+
+use EconomyPlus\Main;
+
+use pocketmine\event\player\PlayerJoinEvent;
+
+/* Copyright (C) ImagicalGamer - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ */
+
+class EventListener extends PluginBase implements Listener{
+
+  protected $plugin;
+
+  public function __construct(Main $plugin)
+  {
+    $this->plugin = $plugin;
+  }
+
+  public function onJoin(PlayerJoinEvent $event){
+    $player = new EconomyPlayer($this->plugin, $event->getPlayer());
+    if(!$this->plugin->cfg->get(strtolower($event->getPlayer()->getName())) instanceof int){
+      $player->newPlayer();
+    }
+  }
+}<?php
+
+namespace EconomyPlus\BaseFiles;
+
+use EconomyPlus\Main;
+use pocketmine\command\Command;
+use pocketmine\command\PluginIdentifiableCommand;
+
+abstract class BaseCommand extends Command implements PluginIdentifiableCommand {
+
+    private $plugin;
+
+    public function __construct($name, Main $plugin){
+        parent::__construct($name);
+        $this->plugin = $plugin;
+        $this->usageMessage = "";
+    }
+
+    public function getPlugin(){
+        return $this->plugin;
+    }
+
+}name: EconomyPlus
+main: EconomyPlus\Main
+version: 0.1.4
+api: [1.0.0, 2.0.0, 3.0.0]
+author: ImagicalGamer»”CÅ÷õ!¶ª=w-h*q¶¦¯   GBMB
