@@ -18,7 +18,7 @@ use pocketmine\utils\Config;
 
 class EconomyPlayer extends PluginBase{
 
-  public function __construct(Main $plugin, Player $player, $hasFile = null){
+  public function __construct(Main $plugin, String $player, $hasFile = null){
     $this->plugin = $plugin;
     $this->player = $player;
     $this->hasFile = $hasFile;
@@ -26,7 +26,7 @@ class EconomyPlayer extends PluginBase{
   }
 
   public function getMoney(){
-    return $this->cfg->get(strtolower($this->player->getName()));
+    return $this->cfg->get(strtolower($this->player));
   }
 
   public function subtractMoney(int $ammount){
@@ -40,7 +40,7 @@ class EconomyPlayer extends PluginBase{
   }
 
   public function setMoney(int $ammount){
-    $this->cfg->set(strtolower($this->player->getName()), round($ammount));
+    $this->cfg->set(strtolower($this->player), round($ammount));
     $this->cfg->save();
     return true;
   }
@@ -51,13 +51,12 @@ class EconomyPlayer extends PluginBase{
   }
 
   public function newPlayer(){
-    $this->cfg->set(strtolower($this->player->getName()), $this->plugin->cfg->get("Default-Money"));
+    $this->cfg->set(strtolower($this->player), $this->plugin->cfg->get("Default-Money"));
     $this->cfg->save();
     return true;
   }
 
   public function sendMessage(String $message){
-    $this->player->sendMessage($message);
-    return true;
+    $this->plugin->getServer()->getPlayer($this->player)->sendMessage($message);
   }
 }
