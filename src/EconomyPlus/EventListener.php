@@ -27,8 +27,8 @@ class EventListener extends PluginBase implements Listener{
   }
 
   public function onJoin(PlayerJoinEvent $event){
-    $player = new EconomyPlayer($this->plugin, $event->getPlayer());
-    if(!$this->plugin->cfg->get(strtolower($event->getPlayer()->getName())) instanceof int){
+    $player = new EconomyPlayer($this->plugin, $event->getPlayer()->getName());
+    if(!$this->plugin->cfg->get(strtolower($event->getPlayer()->getName())) == null){
       $player->newPlayer();
     }
   }

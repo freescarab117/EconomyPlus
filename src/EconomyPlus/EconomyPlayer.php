@@ -72,13 +72,11 @@ class EconomyPlayer extends PluginBase{
     }
     return false;
   }
-  public function buy(String $item, String $ammount, String $price){
+  public function buy(String $item, int $ammount, int $price){
     $itm = Item::get(intval($item), 0, intval($ammount));
     $this->plugin->getServer()->getPlayer($this->player)->getInventory()->addItem($itm);
-    if($this->subtractMoney($price) == false){
-      return;
-    }
-    $this->sendMessage($this->plugin->translate(C::GREEN . "You have bought " . C::YELLOW . intval($ammount) . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . intval($price)));
+    $this->subtractMoney($price);
+    $this->sendMessage($this->plugin->translate(C::GREEN . "You have bought " . C::YELLOW . $ammount . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . $price));
     return true;
   }
 }
