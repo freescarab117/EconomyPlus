@@ -8,6 +8,7 @@ Default-Money: 1000
 Death-Money: 200
 
 # Default Language this plugin uses
+# NOT FUNCTIONAL YET!
 Default-Lang: "eng"
 
 # Enable Commands
