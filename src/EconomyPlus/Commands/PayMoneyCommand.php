@@ -28,15 +28,15 @@ class PayMoneyCommand extends BaseCommand{
     }
 
     public function execute(CommandSender $sender, $commandLabel, array $args) {
-        if(!$sender->isOp()){
-            $sender->sendMessage(C::RED . "You dont have permission to use this command");
+        if(!$sender instanceof Player){
+            $sender->sendMessage(C::RED . "Please run In-Game!");
             return;
         }
         if(!count($args) == 2){
             $sender->sendMessage(C::RED . "Usage: /pay <player> <ammount>");
             return;
         }
-        if(strtolower($sender->getName()) === strtolower($args[1])){
+        if(strtolower($sender->getName()) == strtolower($args[1])){
             $sender->sendMessage(C::RED . "Invalid Player");
         }
         if(!is_numeric($args[1])){
@@ -45,6 +45,6 @@ class PayMoneyCommand extends BaseCommand{
         }
         $player = new EconomyPlayer($this->plugin, $args[0]);
         $player->pay($args[1], $sender->getName());
-        $sender->sendMessage(C::GREEN . "Payed $" C::YELLOW . $args[1] . C::GREEN . " to " . C::YELLOW . $args[0]);
+        $sender->sendMessage(C::GREEN . "Payed $" . C::YELLOW . $args[1] . C::GREEN . " to " . C::YELLOW . $args[0]);
     }
 }
