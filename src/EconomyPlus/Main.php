@@ -46,7 +46,7 @@ class Main extends PluginBase implements Listener{
     $this->getLogger()->info(C::GREEN . "Enabled!");
   }
 
-  public function translate(String $message, String $lang = "eng", String $type = "msg"){
+  public function translate(String $message, String $lang = "eng", String $type = "%UNKNOWN%"){
     if(in_array($lang, $this->lang)){
       $translator = new Language($this, $message, $lang);
       return $translator->translate();
@@ -54,6 +54,10 @@ class Main extends PluginBase implements Listener{
     else{
       return null;
     }
+  }
+
+  public function getLang(){
+    return $cfg->get("Default-Lang");
   }
 
   public function registerCommands(){
