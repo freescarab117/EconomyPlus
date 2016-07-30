@@ -10,6 +10,7 @@ use EconomyPlus\Main;
 
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat as C;
+use pocketmine\item\Item;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -27,19 +28,16 @@ class EconomyPlayer extends PluginBase{
   }
 
   public function getMoney(){
-    return $this->cfg->get(strtolower($this->player));
+    return intval($this->cfg->get(strtolower($this->player)));
   }
 
   public function subtractMoney(int $ammount){
     $money = $this->getMoney();
-    if($money > $ammount){
+    if($money > intval($ammount)){
       $this->setMoney($money - $ammount);
       return true;
     }
-    else{
-      $this->plugin->getLogger()->warning(C::RED . "Invalid Ammount!");
-      return false;
-    }
+    return false;
   }
 
   public function setMoney(int $ammount){
@@ -66,5 +64,21 @@ class EconomyPlayer extends PluginBase{
   public function pay(int $ammount, String $payer){
     $this->addMoney($ammount);
     $this->plugin->getServer()->getPlayer($this->player)->sendMessage(C::YELLOW . $payer . C::GREEN . " has payed you $" . C::YELLOW . $ammount);
+  }
+
+  public function canBuy(int $price){
+    if($this->getMoney() >= $price){
+      return true;
+    }
+    return false;
+  }
+  public function buy(String $item, String $ammount, String $price){
+    $itm = Item::get(intval($item), 0, intval($ammount));
+    $this->plugin->getServer()->getPlayer($this->player)->getInventory()->addItem($itm);
+    if($this->subtractMoney($price) == false){
+      return;
+    }
+    $this->sendMessage($this->plugin->translate(C::GREEN . "You have bought " . C::YELLOW . intval($ammount) . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . intval($price)));
+    return true;
   }
 }

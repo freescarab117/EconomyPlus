@@ -17,6 +17,7 @@ use EconomyPlus\Commands\AddMoneyCommand;
 use EconomyPlus\Commands\TakeMoneyCommand;
 use EconomyPlus\Commands\PayMoneyCommand;
 use EconomyPlus\EventListener;
+use EconomyPlus\Shop\ShopListener;
 use EconomyPlus\Language\Language;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
@@ -31,19 +32,22 @@ class Main extends PluginBase implements Listener{
 
   protected $lang = array("eng");
 
+  public $shop = C::GRAY . "[" . C::GREEN . "Shop" . C::GRAY . "]";
+
   public function onEnable(){
+    @mkdir($this->getDataFolder());
+    $this->saveResource("/config.yml");
     ini_set("extension", "extension=php_openssl.dll");
     $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
     $this->hasUpdates();
-    @mkdir($this->getDataFolder());
-    $this->saveResource("/config.yml");
     $this->registerCommands();
     $this->getServer()->getPluginManager()->registerEvents($this ,$this);
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+    $this->getServer()->getPluginManager()->registerEvents(new ShopListener($this, $this->shop), $this);
     $this->getLogger()->info(C::GREEN . "Enabled!");
   }
 
-  public function translate(String $message, String $lang = "eng", String $type){
+  public function translate(String $message, String $lang = "eng", String $type = "msg"){
     if(in_array($lang, $this->lang)){
       $translator = new Language($this, $message, $lang);
       return $translator->translate();
@@ -78,13 +82,13 @@ class Main extends PluginBase implements Listener{
   }
 
   public function hasUpdates(){
-
     $version = $this->cfg->get("Version");
     $nversion = file_get_contents("https://raw.githubusercontent.com/ImagicalGamer/EconomyPlus/master/resources/version");
     if($nversion > $version){
-      $this->getLogger()->info(C::YELLOW . "An EconomyPlus Update Has Been Found! Run the /update Command to update EconomyPlus!");
+      $this->getLogger()->info(C::YELLOW . "An EconomyPlus Update Has Been Found!");
       return true;
     }
+    $this->getLogger()->info(C::AQUA . "No Updates Found! Your using the latest version of EconomyPlus!");
     return false;
   }
 }
