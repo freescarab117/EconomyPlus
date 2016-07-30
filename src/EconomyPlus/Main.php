@@ -41,9 +41,8 @@ class Main extends PluginBase implements Listener{
     $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
     $this->hasUpdates();
     $this->registerCommands();
+    $this->registerListeners();
     $this->getServer()->getPluginManager()->registerEvents($this ,$this);
-    $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-    $this->getServer()->getPluginManager()->registerEvents(new ShopListener($this, $this->shop), $this);
     $this->getLogger()->info(C::GREEN . "Enabled!");
   }
 
@@ -72,6 +71,14 @@ class Main extends PluginBase implements Listener{
     }
   }
 
+  public function registerListeners(){
+    if($this->cfg->get("EnableShop") === true){
+      $this->getServer()->getPluginManager()->registerEvents(new ShopListener($this, $this->shop), $this);
+    }
+    $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+    return true;
+  }
+
   public function isCommandEnabled(String $cmd){
     if($this->cfg->get($cmd . "-Command") == true){
       return true;
@@ -84,7 +91,7 @@ class Main extends PluginBase implements Listener{
   public function hasUpdates(){
     $version = $this->cfg->get("Version");
     $nversion = file_get_contents("https://raw.githubusercontent.com/ImagicalGamer/EconomyPlus/master/resources/version");
-    if($nversion > $version){
+    if(!$nversion > $version){
       $this->getLogger()->info(C::YELLOW . "An EconomyPlus Update Has Been Found!");
       return true;
     }
