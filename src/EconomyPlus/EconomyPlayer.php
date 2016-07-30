@@ -65,6 +65,6 @@ class EconomyPlayer extends PluginBase{
 
   public function pay(int $ammount, String $payer){
     $this->addMoney($ammount);
-    $this->sendMessage(C::YELLOW . $payer . C::GREEN . " has payed you $" . C::YELLOW . $ammount);
+    $this->plugin->getServer()->getPlayer($this->player)->sendMessage(C::YELLOW . $payer . C::GREEN . " has payed you $" . C::YELLOW . $ammount);
   }
 }
