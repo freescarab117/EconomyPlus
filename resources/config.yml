@@ -16,6 +16,14 @@ addmoney-Command: true
 takemoney-Command: true
 pay-Command: true
 
+# Enable EconomyPlus Shop!
+EnableShop: true
+# Shop Format:
+# [Shop]
+# ItemId
+# Ammount
+# Price
+
 # Current Version DO NOT CHANGE!
 Version: 0.1.4
 ...
