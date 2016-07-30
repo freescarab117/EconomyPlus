@@ -7,6 +7,15 @@ Default-Money: 1000
 # Money someone earns when they kill another player
 Death-Money: 200
 
-#Default Language this plugin uses
+# Default Language this plugin uses
 Default-Lang: "eng"
+
+# Enable Commands
+bal-Command: true
+addmoney-Command: true
+takemoney-Command: true
+pay-Command: true
+
+# Current Version DO NOT CHANGE!
+Version: 0.1.2
 ...
