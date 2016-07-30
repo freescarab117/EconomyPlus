@@ -17,5 +17,5 @@ takemoney-Command: true
 pay-Command: true
 
 # Current Version DO NOT CHANGE!
-Version: 0.1.2
+Version: 0.1.4
 ...
