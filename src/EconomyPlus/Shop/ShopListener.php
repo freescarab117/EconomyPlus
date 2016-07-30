@@ -74,12 +74,15 @@ class ShopListener extends PluginBase implements Listener{
     if($tile instanceof Sign){
       $text = $tile->getText();
       if($text[0] == $this->prefix){
-        $item = substr($text[1], strpos($text[1], "Item: ") + 1);   
+        $item = substr($text[1], strpos($text[1], "Item: ") + 6);   
         if(Item::fromString($item) instanceof Item){
-          $ammount = substr($text[2], strpos($text[2], "Ammount: ") + 1);
-          $price = substr($text[3], strpos($text[3], "Price: ") + 1);
-          if($eplayer->canBuy(intval($price)) == true){
+          $ammount = substr($text[2], strpos($text[2], "Ammount: ") + 9);
+          $price = substr($text[3], strpos($text[3], "Price: ") + 7);
+          if($eplayer->getMoney() >= $price){ 
             $eplayer->buy($item, $ammount, $price);
+          }
+          else{
+            $eplayer->sendMessage(C::RED . "Invalid Balance");
           }
         }
       }
