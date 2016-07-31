@@ -40,8 +40,7 @@ class ShopListener extends PluginBase implements Listener{
     * [Cost]
     */
     $text = $event->getLines();
-    if($text[0] == "[Shop]"){
-    }
+    if($text[0] === "[Shop]"){
     $item = Item::fromString($text[1]);
     if(!$item instanceof Item){
       $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "Invalid Item"));
@@ -64,6 +63,7 @@ class ShopListener extends PluginBase implements Listener{
     $event->setLine(1, "Item: " . $text[1]);
     $event->setLine(2, "Ammount: " . $text[2]);
     $event->setLine(3, "Price: " . $text[3]);
+  }
   }
 
   public function onInteract(PlayerInteractEvent $event){

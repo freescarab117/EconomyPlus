@@ -28,7 +28,7 @@ class SellListener extends PluginBase implements Listener{
   public function __construct(Main $plugin, String $prefix)
   {
     $this->plugin = $plugin;
-    $this->prefix = $prefix;
+    $this->sellprefix = $prefix;
   }
 
   public function onCreate(SignChangeEvent $event){
@@ -40,8 +40,7 @@ class SellListener extends PluginBase implements Listener{
     * [Cost]
     */
     $text = $event->getLines();
-    if($text[0] == "[Sell]"){
-    }
+    if($text[0] === "[Sell]"){
     $item = Item::fromString($text[1]);
     if(!$item instanceof Item){
       $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "Invalid Item"));
@@ -60,10 +59,11 @@ class SellListener extends PluginBase implements Listener{
       $event->setCancelled();
       return;
     }
-    $event->setLine(0, $this->prefix);
+    $event->setLine(0, $this->sellprefix);
     $event->setLine(1, "Item: " . $text[1]);
     $event->setLine(2, "Ammount: " . $text[2]);
     $event->setLine(3, "Price: " . $text[3]);
+  }
   }
 
   public function onInteract(PlayerInteractEvent $event){
@@ -73,7 +73,7 @@ class SellListener extends PluginBase implements Listener{
     $tile = $player->getLevel()->getTile($blk);
     if($tile instanceof Sign){
       $text = $tile->getText();
-      if($text[0] == $this->prefix){
+      if($text[0] == $this->sellprefix){
         $item = substr($text[1], strpos($text[1], "Item: ") + 6);   
         if(Item::fromString($item) instanceof Item){
           $ammount = substr($text[2], strpos($text[2], "Ammount: ") + 9);
