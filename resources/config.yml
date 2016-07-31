@@ -19,9 +19,16 @@ topmoney-Command: true
 
 # Enable EconomyPlus Shop!
 EnableShop: true
-EnableSell: true
 # Shop Format:
 # [Shop]
+# ItemId
+# Ammount
+# Price
+
+# Enable EconomyPlus Sell!
+EnableSell: true
+# Sell Format:
+# [Sell]
 # ItemId
 # Ammount
 # Price
