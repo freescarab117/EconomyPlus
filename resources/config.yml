@@ -8,7 +8,6 @@ Default-Money: 1000
 Death-Money: 200
 
 # Default Language this plugin uses
-# NOT FUNCTIONAL YET!
 Default-Lang: "eng"
 
 # Enable Commands
@@ -16,9 +15,11 @@ bal-Command: true
 addmoney-Command: true
 takemoney-Command: true
 pay-Command: true
+topmoney-Command: true
 
 # Enable EconomyPlus Shop!
 EnableShop: true
+EnableSell: true
 # Shop Format:
 # [Shop]
 # ItemId
