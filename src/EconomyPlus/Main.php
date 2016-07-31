@@ -96,7 +96,7 @@ class Main extends PluginBase implements Listener{
 
   public function registerListeners(){
     if($this->cfg->get("EnableShop") === true){
-      //$this->getServer()->getPluginManager()->registerEvents(new ShopListener($this, $this->shop), $this);
+      $this->getServer()->getPluginManager()->registerEvents(new ShopListener($this, $this->shop), $this);
     }
     if($this->cfg->get("EnableSell") === true){
       $this->getServer()->getPluginManager()->registerEvents(new SellListener($this, $this->sell), $this);
