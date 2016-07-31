@@ -82,10 +82,11 @@ class EconomyPlayer extends PluginBase{
 
   public function sell(String $item, int $ammount, int $price){
     $itm = Item::get(intval($item), 0, intval($ammount));
-    if($this->plugin->getServer()->getPlayer($this->player)->getInventory()->contains($item)){
+    if($this->plugin->getServer()->getPlayer($this->player)->getInventory()->contains($itm)){
       $this->addMoney($price);
       $this->sendMessage($this->plugin->translate(C::GREEN . "You have sold " . C::YELLOW . $ammount . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . $price));
       return true;
+      $this->plugin->getServer()->getPlayer($this->player)->getInventory()->remove($itm);
     }
   }
 }
