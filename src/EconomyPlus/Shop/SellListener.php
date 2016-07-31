@@ -78,12 +78,7 @@ class SellListener extends PluginBase implements Listener{
         if(Item::fromString($item) instanceof Item){
           $ammount = substr($text[2], strpos($text[2], "Ammount: ") + 9);
           $price = substr($text[3], strpos($text[3], "Price: ") + 7);
-          if($eplayer->getMoney() >= $price){ 
             $eplayer->sell($item, $ammount, $price);
-          }
-          else{
-            $eplayer->sendMessage(C::RED . "Invalid Balance");
-          }
         }
       }
     }
