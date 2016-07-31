@@ -16,9 +16,12 @@ use EconomyPlus\Commands\BalanceCommand;
 use EconomyPlus\Commands\AddMoneyCommand;
 use EconomyPlus\Commands\TakeMoneyCommand;
 use EconomyPlus\Commands\PayMoneyCommand;
+use EconomyPlus\Commands\TopMoneyCommand;
 use EconomyPlus\EventListener;
 use EconomyPlus\Shop\ShopListener;
+use EconomyPlus\Shop\SellListener;
 use EconomyPlus\Language\Language;
+use EconomyPlus\Tasks\TopMoneyTask;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -33,6 +36,10 @@ class Main extends PluginBase implements Listener{
   protected $lang = array("eng");
 
   public $shop = C::GRAY . "[" . C::GREEN . "Shop" . C::GRAY . "]";
+
+  public $sell = C::GRAY . "[" . C::AQUA . "Sell" . C::GRAY . "]";
+
+  private $toplist;
 
   public function onEnable(){
     @mkdir($this->getDataFolder());
@@ -56,6 +63,15 @@ class Main extends PluginBase implements Listener{
     }
   }
 
+  public function getInstance(){
+    return $this;
+  }
+
+  public function allMoney(){
+    $cfg = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
+    return $cfg->getAll();
+  }
+
   public function getLang(){
     return $cfg->get("Default-Lang");
   }
@@ -73,11 +89,17 @@ class Main extends PluginBase implements Listener{
     if($this->isCommandEnabled("pay") == true){
       $this->getServer()->getCommandMap()->register("pay", new PayMoneyCommand($this));
     }
+    if($this->isCommandEnabled("topmoney") == true){
+      $this->getServer()->getCommandMap()->register("topmoney", new TopMoneyCommand($this));
+    }
   }
 
   public function registerListeners(){
     if($this->cfg->get("EnableShop") === true){
       $this->getServer()->getPluginManager()->registerEvents(new ShopListener($this, $this->shop), $this);
+    }
+    if($this->cfg->get("EnableSell") === true){
+      $this->getServer()->getPluginManager()->registerEvents(new SellListener($this, $this->sell), $this);
     }
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     return true;
@@ -101,5 +123,9 @@ class Main extends PluginBase implements Listener{
     }
     $this->getLogger()->info(C::AQUA . "No Updates Found! Your using the latest version of EconomyPlus!");
     return false;
+  }
+
+  public function format(String $message){
+    return $message;
   }
 }
