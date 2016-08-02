@@ -50,7 +50,7 @@ class Main extends PluginBase implements Listener{
     $this->registerCommands();
     $this->registerListeners();
     $this->getServer()->getPluginManager()->registerEvents($this ,$this);
-    $this->getLogger()->info(C::GREEN . "Enabled!");
+    $this->getLogger()->info(C::YELLOW . "EconomyPlus v" . $this->cfg->get("Version") . " Enabled!");
   }
 
   public function translate(String $message, String $lang = "eng", String $type = "%UNKNOWN%"){
