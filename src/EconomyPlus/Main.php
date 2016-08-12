@@ -117,6 +117,11 @@ class Main extends PluginBase implements Listener{
       return false;
     }
   }
+  
+  public function myMoney(Player $p){
+    $pl = new EconomyPlayer($this, $p->getName());
+    return($p1->getMoney());
+  }
 
   public function hasUpdates(){
     $version = $this->cfg->get("Version");
