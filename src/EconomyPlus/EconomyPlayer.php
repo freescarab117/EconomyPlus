@@ -25,7 +25,7 @@ class EconomyPlayer extends PluginBase{
     $this->plugin = $plugin;
     $this->player = $player;
     $this->hasFile = $hasFile;
-    $this->cfg = new Config($this->plugin->getDataFolder() . "/players.yml", Config::YAML);
+    $this->cfg = new Config($this->plugin->getDataFolder() . "/players.json", Config::JSON);
   }
 
   public function getMoney(){

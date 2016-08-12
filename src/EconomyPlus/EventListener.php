@@ -29,7 +29,7 @@ class EventListener extends PluginBase implements Listener{
   }
 
   public function onJoin(PlayerJoinEvent $event){
-    $cfg = new Config($this->plugin->getDataFolder() . "/players.yml", Config::YAML);
+    $cfg = new Config($this->plugin->getDataFolder() . "/players.json", Config::JSON);
     $player = new EconomyPlayer($this->plugin, $event->getPlayer()->getName());
     if($cfg->exists($event->getPlayer()->getName(), true) == null){
       $player->newPlayer();

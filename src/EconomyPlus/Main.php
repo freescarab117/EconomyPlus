@@ -40,11 +40,7 @@ class Main extends PluginBase implements Listener{
   public $sell = C::GRAY . "[" . C::AQUA . "Sell" . C::GRAY . "]";
 
   private $toplist;
-  
-  public function onLoad(){
-    ini_set("extension", "extension=php_openssl.dll");
-  }
-  
+
   public function onEnable(){
     @mkdir($this->getDataFolder());
     $this->saveResource("/config.yml");
@@ -73,7 +69,7 @@ class Main extends PluginBase implements Listener{
   }
 
   public function allMoney(){
-    $cfg = new Config($this->getDataFolder() . "/players.yml", Config::YAML);
+    $cfg = new Config($this->getDataFolder() . "/players.json", Config::JSON);
     return $cfg->getAll();
   }
 
