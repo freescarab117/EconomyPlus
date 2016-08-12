@@ -12,7 +12,11 @@ use EconomyPlus\Main;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 
+use pocketmine\event\block\BlockBreakEvent;
+
 use pocketmine\utils\Config;
+
+use pocketmine\tile\Sign;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -44,6 +48,23 @@ class EventListener extends PluginBase implements Listener{
         $cause = $event->getEntity()->getFinalDamageCause();
         $player = new EconomyPlayer($this->plugin, $cause->getName());
         $cause->addMoney($this->plugin->cfg->get("Death-Money"));
+      }
+    }
+  }
+
+  public function onBreak(BlockBreakEvent $event){
+    if($event->getPlayer()->getLevel()->getTile($event->getBlock()) instanceof Sign){
+      $tile = $event->getPlayer()->getLevel()->getTile($event->getBlock());
+      $text = $tile->getText();
+      if($text[0] === $this->plugin->shop){
+        if(!$event->getPlayer()->hasPermission("economyplus.shop.destory")){
+          $event->setCancelled(true);
+        }
+      }
+      if($text[0] === $this->plugin->sell){
+        if(!$event->getPlayer()->hasPermission("economyplus.shop.destory")){
+          $event->setCancelled(true);
+        }
       }
     }
   }
