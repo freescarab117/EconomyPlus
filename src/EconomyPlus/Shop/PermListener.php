@@ -21,7 +21,7 @@ use pocketmine\utils\TextFormat as C;
  * Written by Jake C <imagicalgamer@outlook.com>, July 2016
  */
 
-class ShopListener extends PluginBase implements Listener{
+class PermListener extends PluginBase implements Listener{
 
   protected $plugin;
 
@@ -35,35 +35,26 @@ class ShopListener extends PluginBase implements Listener{
     /*
     * Format
     * [Prefix]
-    * [Item]
-    * [Ammount]
     * [Cost]
+    * [Perm]
+    * [Perm]
     */
     $text = $event->getLines();
-    if($text[0] === "[Shop]"){
-    $item = Item::fromString($text[1]);
-    if(!$item instanceof Item){
-      $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "Invalid Item"));
-      return;
-    }
-    if(!$text[2] > 0){
-      $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "Invalid Ammount"));
-      return;
-    }
-    if(!$text[3] > 0){
+    if($text[0] === "[Perm]"){
+    if(!$text[1] > 0){
       $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "Invalid Price"));
       return;
     }
-    if(!$event->getPlayer()->hasPermission("economyplus.shop.create")){
+    if(!$event->getPlayer()->isOp()){
       $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "You dont have permission to create economy shops!"));
       $event->setCancelled();
       return;
     }
     $event->setLine(0, $this->prefix);
-    $event->setLine(1, "Item: " . $text[1]);
-    $event->setLine(2, "Ammount: " . $text[2]);
-    $event->setLine(3, "Price: " . $text[3]);
-  }
+    $event->setLine(1, "Price: " . $text[1]);
+    $event->setLine(2, "Permission: ");
+    $event->setLine(3, $text[3]);
+    }
   }
 
   public function onInteract(PlayerInteractEvent $event){
@@ -74,15 +65,12 @@ class ShopListener extends PluginBase implements Listener{
     if($tile instanceof Sign){
       $text = $tile->getText();
       if($text[0] == $this->prefix){
-        $item = substr($text[1], strpos($text[1], "Item: ") + 6);   
-        if(Item::fromString($item) instanceof Item){
-          $ammount = substr($text[2], strpos($text[2], "Ammount: ") + 9);
-          $price = substr($text[3], strpos($text[3], "Price: ") + 7);
-          if($eplayer->getMoney() >= $price){ 
-            $eplayer->buy($item, $ammount, $price);
-          }
-          else{
-            $eplayer->sendMessage(C::RED . "Invalid Balance");
+        $price = substr($text[1], strpos($text[3], "Price: ") + 7);
+        if(intval($price) > 0){
+          if($text[2] == "Permission: "){
+            $perm = $text[3];
+            $eplayer->buyPerm($perm, $price);
+            return true;
           }
         }
       }
@@ -96,15 +84,17 @@ class ShopListener extends PluginBase implements Listener{
     if($tile instanceof Sign){
       $text = $tile->getText();
       if($text[0] == $this->prefix){
-        $item = substr($text[1], strpos($text[1], "Item: ") + 1);   
-        if(Item::fromString($item) instanceof Item){
-          if(!$player->isOp()){
-            $event->setCancelled();
-            return false;
+        $price = substr($text[1], strpos($text[3], "Price: ") + 7);
+        if($price > 0){
+          if($text[2] == "Permission: "){
+            if(!$player->hasPermission("economyplus.shop.destroy")){
+              $event->setCancelled(true);
+              return false;
+            }
+            return true;
           }
-          return true;
         }
       }
     }
-}
+  }
 }
