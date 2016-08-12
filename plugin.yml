@@ -14,6 +14,6 @@ permissions:
      economyplus.shop.create:
       description: Allows players to create shop signs
       default: op
-     economyplus.shop.destroy
+     economyplus.shop.destroy:
       description: Allows players to destroy shop signs
       default: op
