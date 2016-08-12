@@ -82,7 +82,7 @@ class PermListener extends PluginBase implements Listener{
     if($tile instanceof Sign){
       $text = $tile->getText();
       if($text[0] == $this->prefix){
-        $price = substr($text[1], strpos($text[3], "Price: ") + 7);
+        $price = substr($text[1], strpos($text[1], "Price: ") + 7);
         if($price > 0){
             if(!$player->hasPermission("economyplus.shop.destroy")){
               $event->setCancelled(true);
