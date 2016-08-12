@@ -3,3 +3,17 @@ main: EconomyPlus\Main
 version: 0.1.4
 api: [1.0.0, 2.0.0, 3.0.0]
 author: ImagicalGamer
+permissions:
+    economyplus:
+        default: op
+          children:
+            economyplus.shop.create:
+              default: op
+            economyplus.shop.destory
+              default: op
+            economyplus.sell.create
+              default: op
+            economyplus.sell.destory
+              default: op
+            economyplus.command.takemoney
+              default: true
