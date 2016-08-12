@@ -10,6 +10,7 @@ use pocketmine\Player;
 use EconomyPlus\Main;
 
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerDeathEvent;
 
 use pocketmine\utils\Config;
 
@@ -34,6 +35,16 @@ class EventListener extends PluginBase implements Listener{
     if($cfg->exists($event->getPlayer()->getName(), true) == null){
       $player->newPlayer();
       return;
+    }
+  }
+
+  public function onDeath(PlayerDeathEvent $event){
+    if($event->getEntity() instanceof Player){
+      if($event->getEntity()->getFinalDamageCause() instanceof Player){
+        $cause = $event->getEntity()->getFinalDamageCause();
+        $player = new EconomyPlayer($this->plugin, $cause->getName());
+        $cause->addMoney($this->plugin->cfg->get("Death-Money"));
+      }
     }
   }
 }
