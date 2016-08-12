@@ -39,16 +39,17 @@ class TopMoneyTask extends PluginBase{
   	$ret = array();
   	$n = 0;
   	$this->getPlayer()->sendMessage(C::GREEN . "EconomyPlus TopMoney!");
+    $this->getPlayer()->sendMessage(C::YELLOW . "---------------------");
   	foreach($money as $p => $m){
   		$n++;
   		$ret[$n] = [$p, $m];
   		$message = json_encode($ret[$n]);
   		$message = str_replace(["[", "]", '"'], "", $message);
-  		$message = str_replace(",", ": ", $message);
+  		$message = str_replace(",", "§e: $", $message);
   		if($n > 10){
   			return $n = $n - 10;
   		}
-  		$this->getPlayer()->sendMessage(C::GREEN . "#" . C::YELLOW . $n . " " . C::YELLOW .  $message);
+  		$this->getPlayer()->sendMessage(C::GREEN . "* " . C::YELLOW . $n . ". " . C::GREEN .  $message);
   	}
   }
 }
