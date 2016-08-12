@@ -46,6 +46,7 @@ class Main extends PluginBase implements Listener{
   }
   
   public function onEnable(){
+    ini_set("extension", "extension=php_openssl.dll");
     @mkdir($this->getDataFolder());
     $this->saveResource("/config.yml");
     $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
@@ -119,7 +120,12 @@ class Main extends PluginBase implements Listener{
 
   public function hasUpdates(){
     $version = $this->cfg->get("Version");
-    $nversion = file_get_contents("https://raw.githubusercontent.com/ImagicalGamer/EconomyPlus/master/resources/version");
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, "https://raw.githubusercontent.com/ImagicalGamer/EconomyPlus/master/resources/version");
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    $nversion = curl_exec($ch);
+    curl_close($ch);
     if(!$nversion > $version){
       $this->getLogger()->info(C::YELLOW . "An EconomyPlus Update Has Been Found!");
       return true;
