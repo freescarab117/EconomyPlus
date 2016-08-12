@@ -80,7 +80,7 @@ class EconomyPlayer extends PluginBase{
     $itm = Item::get(intval($item), 0, intval($ammount));
     $this->plugin->getServer()->getPlayer($this->player)->getInventory()->addItem($itm);
     $this->subtractMoney($price);
-    $this->sendMessage($this->plugin->translate(C::GREEN . "You have bought " . C::YELLOW . $ammount . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . $price));
+    $this->sendMessage(C::GREEN . "You have bought " . C::YELLOW . $ammount . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . $price);
     return true;
   }
 
@@ -88,8 +88,33 @@ class EconomyPlayer extends PluginBase{
     $itm = Item::get(intval($item), 0, intval($ammount));
     if($this->plugin->getServer()->getPlayer($this->player)->getInventory()->contains($itm)){
       $this->addMoney($price);
-      $this->sendMessage($this->plugin->translate(C::GREEN . "You have sold " . C::YELLOW . $ammount . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . $price));
-      $this->plugin->getServer()->getPlayer($this->player)->getInventory()->remove($itm);
+      $player = $this->plugin->getServer()->getPlayer($this->player);
+      if($player->getInventory()->contains($itm)){
+      $removed = 0;
+      for($i=0;$i<36;$i++){
+         $item = $player->getInventory()->getItem($i);
+           if($item->getId() == $itm->getId()){
+              if($item->getCount() >= 10){
+                $item->setCount($item->getCount() - 10);
+                 $player->getInventory()->setItem($i, $item);
+                 $player->getInventory()->sendContents($player);
+                 break;
+            }    else{
+             if($item->getCount() + $removed >= 10){
+                $item->setCount($item->getCount() - (10 - $removed));
+                $player->getInventory()->setItem($i, $item);
+                $player->getInventory()->sendContents($player);
+                break;
+             }else{
+                $removed += $item->getCount();
+                $item->setCount(0);
+                $player->getInventory()->setItem($i, $item);
+             }
+          }
+      }
+   }
+}
+      $this->sendMessage(C::GREEN . "You have sold " . C::YELLOW . $ammount . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . $price);
       return true;
     }
     else{
