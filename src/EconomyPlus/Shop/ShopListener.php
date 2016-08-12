@@ -54,7 +54,7 @@ class ShopListener extends PluginBase implements Listener{
       $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "Invalid Price"));
       return;
     }
-    if(!$event->getPlayer()->isOp()){
+    if(!$event->getPlayer()->hasPermission("economyplus.shop.create")){
       $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "You dont have permission to create economy shops!"));
       $event->setCancelled();
       return;
