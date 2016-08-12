@@ -50,6 +50,7 @@ class Main extends PluginBase implements Listener{
     $this->registerCommands();
     $this->registerListeners();
     $this->getServer()->getPluginManager()->registerEvents($this ,$this);
+    $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $this->getLogger()->info(C::YELLOW . "EconomyPlus v" . $this->cfg->get("Version") . " Enabled!");
   }
 
@@ -101,7 +102,6 @@ class Main extends PluginBase implements Listener{
     if($this->cfg->get("EnableSell") === true){
       $this->getServer()->getPluginManager()->registerEvents(new SellListener($this, $this->sell), $this);
     }
-    $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     return true;
   }
 

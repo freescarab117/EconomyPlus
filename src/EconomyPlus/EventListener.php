@@ -11,6 +11,8 @@ use EconomyPlus\Main;
 
 use pocketmine\event\player\PlayerJoinEvent;
 
+use pocketmine\utils\Config;
+
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
@@ -27,9 +29,11 @@ class EventListener extends PluginBase implements Listener{
   }
 
   public function onJoin(PlayerJoinEvent $event){
+    $cfg = new Config($this->plugin->getDataFolder() . "/players.yml", Config::YAML);
     $player = new EconomyPlayer($this->plugin, $event->getPlayer()->getName());
-    if(!$this->plugin->cfg->get(strtolower($event->getPlayer()->getName())) == null){
+    if($cfg->exists($event->getPlayer()->getName(), true) == null){
       $player->newPlayer();
+      return;
     }
   }
 }

@@ -11,6 +11,7 @@ use EconomyPlus\Main;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat as C;
 use pocketmine\item\Item;
+use pocketmine\item\ItemBlock;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -85,8 +86,15 @@ class EconomyPlayer extends PluginBase{
     if($this->plugin->getServer()->getPlayer($this->player)->getInventory()->contains($itm)){
       $this->addMoney($price);
       $this->sendMessage($this->plugin->translate(C::GREEN . "You have sold " . C::YELLOW . $ammount . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . $price));
-      return true;
       $this->plugin->getServer()->getPlayer($this->player)->getInventory()->remove($itm);
+      return true;
+    }
+    else{
+      if($itm instanceof ItemBlock){
+        $this->plugin->getServer()->getPlayer($this->player)->sendMessage(C::GREEN . "You do not have " . C::YELLOW . $itm->getBlock()->getName());
+        return false;
+      }
+      $this->plugin->getServer()->getPlayer($this->player)->sendMessage(C::GREEN . "You do not have " . C::YELLOW . $itm->getAmount() . C::GREEN . " of " . C::YELLOW . $item->getName());
     }
   }
 }
