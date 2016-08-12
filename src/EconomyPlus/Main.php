@@ -40,11 +40,14 @@ class Main extends PluginBase implements Listener{
   public $sell = C::GRAY . "[" . C::AQUA . "Sell" . C::GRAY . "]";
 
   private $toplist;
-
+  
+  public function onLoad(){
+    ini_set("extension", "extension=php_openssl.dll");
+  }
+  
   public function onEnable(){
     @mkdir($this->getDataFolder());
     $this->saveResource("/config.yml");
-    ini_set("extension", "extension=php_openssl.dll");
     $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
     $this->hasUpdates();
     $this->registerCommands();
