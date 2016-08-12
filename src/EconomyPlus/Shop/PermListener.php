@@ -52,7 +52,7 @@ class PermListener extends PluginBase implements Listener{
     }
     $event->setLine(0, $this->prefix);
     $event->setLine(1, "Price: " . $text[1]);
-    $event->setLine(2, $text[2];
+    $event->setLine(2, $text[2]);
     $event->setLine(3, $text[3]);
     }
   }
