@@ -1,17 +1,27 @@
 # EconomyPlus
 
+EconomyPlus is an light Economy plugin built for PocketMine-MP (and all PHP7 alts) with many features!
 
-##EconomyPlus Commands
+#Commands
 
-Command | Argument | Description
---------------------------------
-| /bal | none | View your money balance!
---------------------------------
-| /addmoney | <ammount> <player> | Add money to a player! | 
---------------------------------
-| /takemoney | <ammount> <player> | Take money from a player! |
---------------------------------
-| /pay | <ammount> <player> | Pay a player! |
----------------------------------
-| /topmoney | none | View the topmoney stats! |
----------------------------------
+| Command | Argument | Description |
+| :-: | :---------: | :---------------: | :---------: |
+| /addmoney | `<player> <amount>` | Add Money to an Player! |
+| /bal | NA | View your money balance!
+| /pay | `<player> <amount>` | Pay an Player!
+| /takemoney | `<player> <amount>` | Take Money from an Player! |
+| /topmoney | NA | See the TopMoney Stats! |
+
+#Shops
+
+##Sell Shop
+
+| Line1 | Line2 | Line3 | Line4 |
+| :---: | :---: | :---: | :---: |
+| [Shop] | `<itemid>` | `<amount>` | `<price>` |
+
+##Buy Shops
+
+| Line1 | Line2 | Line3 | Line4 |
+| :---: | :---: | :---: | :---: |
+| [Shop] | `<itemid>` | `<amount>` | `<price>` |
