@@ -74,7 +74,7 @@ class EconomyPlayer extends PluginBase{
     return false;
   }
   public function buy(String $item, int $ammount, int $price){
-    if($this->canBuy() == false){
+    if($this->canBuy($price) == false){
       return false;
     }
     $itm = Item::get(intval($item), 0, intval($ammount));

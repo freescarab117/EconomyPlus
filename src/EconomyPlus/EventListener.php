@@ -51,21 +51,4 @@ class EventListener extends PluginBase implements Listener{
       }
     }
   }
-
-  public function onBreak(BlockBreakEvent $event){
-    if($event->getPlayer()->getLevel()->getTile($event->getBlock()) instanceof Sign){
-      $tile = $event->getPlayer()->getLevel()->getTile($event->getBlock());
-      $text = $tile->getText();
-      if($text[0] === $this->plugin->shop){
-        if(!$event->getPlayer()->hasPermission("economyplus.shop.destory")){
-          $event->setCancelled(true);
-        }
-      }
-      if($text[0] === $this->plugin->sell){
-        if(!$event->getPlayer()->hasPermission("economyplus.shop.destory")){
-          $event->setCancelled(true);
-        }
-      }
-    }
-  }
 }
