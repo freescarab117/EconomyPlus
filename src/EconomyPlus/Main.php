@@ -20,6 +20,7 @@ use EconomyPlus\Commands\TopMoneyCommand;
 use EconomyPlus\EventListener;
 use EconomyPlus\Shop\ShopListener;
 use EconomyPlus\Shop\SellListener;
+use EconomyPlus\Shop\PermListener;
 use EconomyPlus\Language\Language;
 use EconomyPlus\Tasks\TopMoneyTask;
 
@@ -38,6 +39,8 @@ class Main extends PluginBase implements Listener{
   public $shop = C::GRAY . "[" . C::GREEN . "Shop" . C::GRAY . "]";
 
   public $sell = C::GRAY . "[" . C::AQUA . "Sell" . C::GRAY . "]";
+
+  public $perm = C::GRAY . "[" . C::RED . "Perm" . C::GRAY . "]";
 
   private $toplist;
   
@@ -105,6 +108,9 @@ class Main extends PluginBase implements Listener{
     }
     if($this->cfg->get("EnableSell") === true){
       $this->getServer()->getPluginManager()->registerEvents(new SellListener($this, $this->sell), $this);
+    }
+    if($this->cfg->get("EnablePermShop") === true){
+      $this->getServer()->getPluginManager()->registerEvents(new PermListener($this, $this->perm), $this);
     }
     return true;
   }

@@ -125,4 +125,19 @@ class EconomyPlayer extends PluginBase{
       $this->plugin->getServer()->getPlayer($this->player)->sendMessage(C::GREEN . "You do not have " . C::YELLOW . $itm->getAmount() . C::GREEN . " of " . C::YELLOW . $item->getName());
     }
   }
+
+  public function buyPerm(String $perm, Int $price){
+    if($this->canBuy($price) == true){
+      $this->subtractMoney($price);
+      $p = $this->plugin->getServer()->getPlayer($this->player);
+      $at = $p->addAttachment($this->plugin);
+      $at->setPermission($perm, true);
+      $p->sendMessage(C::GREEN . "You have bought " . C::YELLOW . $perm . C::GREEN . " for $" . C::YELLOW . $price);
+      return true;
+    }
+    else{
+      $this->plugin->getServer()->getPlayer($this->player)->sendMessage(C::GREEN . "Invalid Balance!");
+      return false;
+    } 
+  }
 }

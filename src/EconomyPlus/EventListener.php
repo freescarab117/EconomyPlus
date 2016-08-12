@@ -18,6 +18,8 @@ use pocketmine\utils\Config;
 
 use pocketmine\tile\Sign;
 
+use pocketmine\item\enchantment\Enchantment;
+
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
