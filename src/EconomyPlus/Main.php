@@ -119,7 +119,7 @@ class Main extends PluginBase implements Listener{
   }
   
   public function myMoney(Player $p){
-    $pl = new EconomyPlayer($this, $p->getName());
+    $p1 = new EconomyPlayer($this, $p->getName());
     return($p1->getMoney());
   }
 
