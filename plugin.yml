@@ -4,16 +4,16 @@ version: 0.1.4
 api: [1.0.0, 2.0.0, 3.0.0]
 author: ImagicalGamer
 permissions:
-    economyplus:
-        default: op
-          children:
-            economyplus.shop.create:
-              default: op
-            economyplus.shop.destory
-              default: op
-            economyplus.sell.create
-              default: op
-            economyplus.sell.destory
-              default: op
-            economyplus.command.takemoney
-              default: true
+ economyplus.*:
+  default: op
+  description: Allows to control all of functions in EconomyPlus
+  children:
+     economyplus.command.takemoney:
+      default: op
+      description: Allows to take player's money
+     economyplus.shop.create:
+      description: Allows players to create shop signs
+      default: op
+     economyplus.shop.destroy
+      description: Allows players to destroy shop signs
+      default: op
