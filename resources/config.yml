@@ -33,6 +33,14 @@ EnableSell: true
 # Ammount
 # Price
 
+#Enable EconomyPlus PermissionShop!
+EnablePermShop: true
+# Format:
+# [Perm]
+# Price
+# NA
+# Perm
+
 # Current Version DO NOT CHANGE!
-Version: 0.1.5
+Version: 0.1.4
 ...
