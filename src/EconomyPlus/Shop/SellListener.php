@@ -90,7 +90,7 @@ class SellListener extends PluginBase implements Listener{
     $tile = $player->getLevel()->getTile($blk);
     if($tile instanceof Sign){
       $text = $tile->getText();
-      if($text[0] == $this->prefix){
+      if($text[0] == $this->sellprefix){
         $item = substr($text[1], strpos($text[1], "Item: ") + 1);   
         if(Item::fromString($item) instanceof Item){
           if(!$player->isOp()){
