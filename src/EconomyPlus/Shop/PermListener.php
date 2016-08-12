@@ -52,7 +52,7 @@ class PermListener extends PluginBase implements Listener{
     }
     $event->setLine(0, $this->prefix);
     $event->setLine(1, "Price: " . $text[1]);
-    $event->setLine(2, "Permission: ");
+    $event->setLine(2, $text[2];
     $event->setLine(3, $text[3]);
     }
   }
@@ -65,13 +65,11 @@ class PermListener extends PluginBase implements Listener{
     if($tile instanceof Sign){
       $text = $tile->getText();
       if($text[0] == $this->prefix){
-        $price = substr($text[1], strpos($text[3], "Price: ") + 7);
+        $price = substr($text[1], strpos($text[1], "Price: ") + 7);
         if(intval($price) > 0){
-          if($text[2] == "Permission: "){
-            $perm = $text[3];
+            $perm = $text[2] . $text[3];
             $eplayer->buyPerm($perm, $price);
             return true;
-          }
         }
       }
     }
@@ -86,13 +84,11 @@ class PermListener extends PluginBase implements Listener{
       if($text[0] == $this->prefix){
         $price = substr($text[1], strpos($text[3], "Price: ") + 7);
         if($price > 0){
-          if($text[2] == "Permission: "){
             if(!$player->hasPermission("economyplus.shop.destroy")){
               $event->setCancelled(true);
               return false;
             }
             return true;
-          }
         }
       }
     }
