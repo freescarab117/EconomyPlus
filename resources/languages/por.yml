@@ -1,0 +1,12 @@
+---
+INVALID-BALANCE: " Equilíbrio inválido " 
+INVALID-PRICE: " Preço inválido " 
+INVALID-ITEM: " Item inválido " 
+INVALID-AMOUNT: " Valor inválido " 
+
+INVALID-PERMISSION: " Você não tem permissão para executar esta tarefa " 
+
+UPDATE-FOUND: " Uma atualização Economyplus foi encontrado! " 
+NO-UPDATE: " Sem Updates encontrou seu usando a última versão do EconomyPlus! " 
+REQUEST-UPDATE: " Atualizando ... " 
+...
