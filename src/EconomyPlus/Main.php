@@ -24,6 +24,8 @@ use EconomyPlus\Shop\PermListener;
 use EconomyPlus\Language\Language;
 use EconomyPlus\Tasks\TopMoneyTask;
 
+use pocketmine\utils\Utils;
+
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
@@ -45,7 +47,9 @@ class Main extends PluginBase implements Listener{
   private $toplist;
   
   public function onLoad(){
+    ini_set("extension", "extension=php_openssl.dll");
     $this->saveAllLangs();
+    //fopen(filename, mode)
   }
   
   public function onEnable(){
@@ -138,14 +142,11 @@ class Main extends PluginBase implements Listener{
 
   public function hasUpdates(){
     $version = $this->cfg->get("Version");
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://raw.githubusercontent.com/ImagicalGamer/EconomyPlus/master/resources/version");
-    curl_setopt($ch, CURLOPT_HEADER, 0);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    $nversion = curl_exec($ch);
-    curl_close($ch);
-    if(!$nversion > $version){
+    $nversion = Utils::getUrl("https://raw.githubusercontent.com/ImagicalGamer/EconomyPlus/master/resources/version");
+    if($nversion > $version){
       $this->getLogger()->info(C::YELLOW . $this->translate("UPDATE-FOUND"));
+      //$this->getLogger()->info(C::YELLOW . $this->translate("UPDATE-REQUEST"));
+      $this->update($nversion, true);
       return true;
     }
     $this->getLogger()->info(C::AQUA . $this->translate("NO-UPDATE"));
@@ -154,5 +155,11 @@ class Main extends PluginBase implements Listener{
 
   public function format(String $message){
     return $message;
+  }
+
+  public function update(String $version, bool $val = true){
+    if($val == false){
+      return;
+    }
   }
 }
