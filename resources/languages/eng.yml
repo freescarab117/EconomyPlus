@@ -8,4 +8,5 @@ INVALID-PERMISSION: "You do not have permission to complete this task"
 
 UPDATE-FOUND: "An EconomyPlus Update Has Been Found!"
 NO-UPDATE: "No Updates Found! Your using the latest version of EconomyPlus!"
+UPDATE-REQUEST: "Updating..."
 ...
