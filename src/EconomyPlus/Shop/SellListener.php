@@ -43,19 +43,19 @@ class SellListener extends PluginBase implements Listener{
     if($text[0] === "[Sell]"){
     $item = Item::fromString($text[1]);
     if(!$item instanceof Item){
-      $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "Invalid Item"));
+      $event->getPlayer()->sendMessage(C::RED . $this->plugin->translate("INVALID-ITEM"));
       return;
     }
-    if($text[2] instanceof int && $text[2] > 0){
-      $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "Invalid Ammount"));
+    if(!is_numeric($text[2])){
+      $event->getPlayer()->sendMessage(C::RED . $this->plugin->translate("INVALID-AMOUNT"));
       return;
     }
-    if($text[3] instanceof int && $text[3] > 0){
-      $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "Invalid Price"));
+    if(!is_numeric($text[3])){
+      $event->getPlayer()->sendMessage(C::RED . $this->plugin->translate("INVALID-PRICE"));
       return;
     }
     if(!$event->getPlayer()->hasPermission("economyplus.shop.create")){
-      $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "You dont have permission to create economy shops!"));
+      $event->getPlayer()->sendMessage(C::RED . $this->plugin->translate("INVALID-PERMISSION"));
       $event->setCancelled();
       return;
     }

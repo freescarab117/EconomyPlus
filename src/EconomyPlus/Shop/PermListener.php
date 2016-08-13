@@ -41,12 +41,12 @@ class PermListener extends PluginBase implements Listener{
     */
     $text = $event->getLines();
     if($text[0] === "[Perm]"){
-    if(!$text[1] > 0){
-      $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "Invalid Price"));
+    if(!is_numeric($text[1])){
+      $event->getPlayer()->sendMessage(C::RED . $this->plugin->translate("INVALID-PRICE"));
       return;
     }
-    if(!$event->getPlayer()->isOp()){
-      $event->getPlayer()->sendMessage($this->plugin->translate(C::RED . "You dont have permission to create economy shops!"));
+    if(!$event->getPlayer()->hasPermission("economyplus.shop.create")){
+      $event->getPlayer()->sendMessage(C::RED . $this->plugin->translate("INVALID-PERMISSION"));
       $event->setCancelled();
       return;
     }
