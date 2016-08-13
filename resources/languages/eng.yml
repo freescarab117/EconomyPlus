@@ -2,6 +2,7 @@
 INVALID-BALANCE: "Invalid Balance"
 INVALID-PRICE: "Invalid Price"
 INVALID-ITEM: "Invalid Item"
+INVALID-AMOUNT: "Invalid Amount"
 
 INVALID-PERMISSION: "You do not have permission to complete this task"
 
