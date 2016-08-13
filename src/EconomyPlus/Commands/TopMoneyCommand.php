@@ -29,7 +29,7 @@ class TopMoneyCommand extends BaseCommand{
 
     public function execute(CommandSender $sender, $commandLabel, array $args) {
         if(!$sender instanceof Player){
-            $sender->sendMessage(C::RED . "Please run In-Game!");
+            $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-PERMISSION"));
             return;
         }
         $task = new TopMoneyTask($this->plugin, $sender->getName(), $this->plugin->allMoney());

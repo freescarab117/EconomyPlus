@@ -30,7 +30,7 @@ class BalanceCommand extends BaseCommand{
     public function execute(CommandSender $sender, $commandLabel, array $args) {
     	if($sender instanceof Player){
     		$player = new EconomyPlayer($this->plugin, $sender->getName());
-    		$player->sendMessage($this->plugin->translate(C::GREEN . "You have $" . $player->getMoney()));
+    		$player->sendMessage(C::GREEN . "You have $" . $player->getMoney());
     	}
     }
 }

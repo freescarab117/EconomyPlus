@@ -29,7 +29,7 @@ class AddMoneyCommand extends BaseCommand{
 
     public function execute(CommandSender $sender, $commandLabel, array $args) {
         if(!$sender->isOp()){
-            $sender->sendMessage(C::RED . "You dont have permission to use this command");
+            $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-PERMISSION"));
             return;
         }
         if(!count($args) == 2){

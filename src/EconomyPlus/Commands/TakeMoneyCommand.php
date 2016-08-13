@@ -29,7 +29,7 @@ class TakeMoneyCommand extends BaseCommand{
 
     public function execute(CommandSender $sender, $commandLabel, array $args) {
         if(!$sender->isOp()){
-            $sender->sendMessage(C::RED . "You dont have permission to use this command");
+            $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-PERMISSION"));
             return;
         }
         if(!count($args) == 2){
@@ -37,7 +37,7 @@ class TakeMoneyCommand extends BaseCommand{
             return;
         }
         if(!is_numeric($args[1])){
-            $sender->sendMessage(C::RED . "Invalid ammount");
+            $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-AMOUNT"));
             return;
         }
         $player = new EconomyPlayer($this->plugin, $args[0]);

@@ -29,7 +29,7 @@ class PayMoneyCommand extends BaseCommand{
 
     public function execute(CommandSender $sender, $commandLabel, array $args) {
         if(!$sender instanceof Player){
-            $sender->sendMessage(C::RED . "Please run In-Game!");
+            $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-PERMISSION"));
             return;
         }
         if(!count($args) == 2){
@@ -40,7 +40,7 @@ class PayMoneyCommand extends BaseCommand{
             $sender->sendMessage(C::RED . "Invalid Player");
         }
         if(!is_numeric($args[1])){
-            $sender->sendMessage(C::RED . "Invalid ammount");
+            $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-AMOUNT"));
             return;
         }
         $player = new EconomyPlayer($this->plugin, $args[0]);
