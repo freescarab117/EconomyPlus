@@ -1,0 +1,11 @@
+---
+INVALID-BALANCE: "Tu n'as pas assez d'argent ! "
+INVALID-PRICE: "Tu as mis un mauvais prix."
+INVALID-ITEM: "Tu as mis un mauvais item."
+INVALID-AMOUNT: "Mauvais montant"
+
+INVALID-PERMISSION: "Tu n'as pas la permission ! "
+
+UPDATE-FOUND: "Une nouvelle mise à jour de EconomyPlus est disponible !"
+NO-UPDATE: "Aucun mise à jour disponible, tu utilise la dernière version de EconomyPlus"
+...
