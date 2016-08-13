@@ -1,0 +1,10 @@
+---
+INVALID-BALANCE: "Invalid Balance"
+INVALID-PRICE: "Invalid Price"
+INVALID-ITEM: "Invalid Item"
+
+INVALID-PERMISSION: "You do not have permission to complete this task"
+
+UPDATE-FOUND: "An EconomyPlus Update Has Been Found!"
+NO-UPDATE: "No Updates Found! Your using the latest version of EconomyPlus!"
+...
