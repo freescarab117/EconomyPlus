@@ -136,7 +136,7 @@ class EconomyPlayer extends PluginBase{
       return true;
     }
     else{
-      $this->plugin->getServer()->getPlayer($this->player)->sendMessage(C::GREEN . "Invalid Balance!");
+      $this->plugin->getServer()->getPlayer($this->player)->sendMessage(C::RED . $this->plugin->translate("INVALID-BALANCE"));
       return false;
     } 
   }

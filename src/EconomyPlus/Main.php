@@ -34,7 +34,7 @@ class Main extends PluginBase implements Listener{
 
   protected $api;
 
-  protected $lang = array("eng");
+  public $lang = "";
 
   public $shop = C::GRAY . "[" . C::GREEN . "Shop" . C::GRAY . "]";
 
@@ -45,7 +45,7 @@ class Main extends PluginBase implements Listener{
   private $toplist;
   
   public function onLoad(){
-    ini_set("extension", "extension=php_openssl.dll");
+    $this->saveAllLangs();
   }
   
   public function onEnable(){
@@ -53,6 +53,8 @@ class Main extends PluginBase implements Listener{
     @mkdir($this->getDataFolder());
     $this->saveResource("/config.yml");
     $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
+    $this->lang = $this->cfg->get("Default-Lang");
+    $this->langFile = new Config($this->getDataFolder() . "/languages/" . $this->lang . ".yml", Config::YAML);
     $this->hasUpdates();
     $this->registerCommands();
     $this->registerListeners();
@@ -61,14 +63,19 @@ class Main extends PluginBase implements Listener{
     $this->getLogger()->info(C::YELLOW . "EconomyPlus v" . $this->cfg->get("Version") . " Enabled!");
   }
 
-  public function translate(String $message, String $lang = "eng", String $type = "%UNKNOWN%"){
-    if(in_array($lang, $this->lang)){
-      $translator = new Language($this, $message, $lang);
-      return $translator->translate();
+  public function saveAllLangs(){
+    foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->getFile() . "resources/languages")) as $resource){
+      $resource = str_replace("\\", "/", $resource);
+      $resarr = explode("/", $resource);
+      if(substr($resarr[count($resarr) - 1], strrpos($resarr[count($resarr) - 1], '.') + 1) == "yml"){
+        $this->saveResource("languages/" . $resarr[count($resarr) - 1]);
+      }
     }
-    else{
-      return null;
-    }
+  }
+
+  public function translate(String $msgType){
+    $msg = $this->langFile->get($msgType);
+    return $msg;
   }
 
   public function getInstance(){
@@ -138,10 +145,10 @@ class Main extends PluginBase implements Listener{
     $nversion = curl_exec($ch);
     curl_close($ch);
     if(!$nversion > $version){
-      $this->getLogger()->info(C::YELLOW . "An EconomyPlus Update Has Been Found!");
+      $this->getLogger()->info(C::YELLOW . $this->translate("UPDATE-FOUND"));
       return true;
     }
-    $this->getLogger()->info(C::AQUA . "No Updates Found! Your using the latest version of EconomyPlus!");
+    $this->getLogger()->info(C::AQUA . $this->translate("NO-UPDATE"));
     return false;
   }
 
