@@ -1,0 +1,12 @@
+---
+INVALID-BALANCE: "Unbekannte Balance!"
+INVALID-PRICE: "Unbekannter Preis!"
+INVALID-ITEM: "Unbekannter Gegenstand!"
+INVALID-AMOUNT: "Unbekannte Menge"
+
+INVALID-PERMISSION: "Du hast keine rechte um den task zu beenden!"
+
+UPDATE-FOUND: "Eine EconomyPlus aktualisierung wurde gefunden!"
+NO-UPDATE: "Keine aktualisierung gefunden! Du benutzt die neuste version von EconomyPlus!"
+REQUEST-UPDATE: "Aktualisiere..."
+...
