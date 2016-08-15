@@ -25,3 +25,9 @@ EconomyPlus is an light Economy plugin built for PocketMine-MP (and all PHP7 alt
 | Line1 | Line2 | Line3 | Line4 |
 | :---: | :---: | :---: | :---: |
 | [Shop] | `<itemid>` | `<amount>` | `<price>` |
+
+##Perm Shops
+
+| Line1 | Line2 | Line3 | Line4 |
+| :---: | :---: | :---: | :---: |
+| [Perm] | `<price>` | `<perm>` | `<perm cont.>` |
