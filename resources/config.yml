@@ -7,7 +7,8 @@ Default-Money: 1000
 # Money someone earns when they kill another player
 Death-Money: 200
 
-# Default Language this plugin uses (eng, fre)
+# Default Language EconomyPlus Uses!
+# Avalible Languages: "eng" or "english", "fre" or "french", "ger" or "german", "chi" or "chinese", "schi" or "simplified chinese"
 Default-Lang: "eng"
 
 # Enable Commands
