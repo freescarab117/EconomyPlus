@@ -49,7 +49,6 @@ class Main extends PluginBase implements Listener{
   public function onLoad(){
     ini_set("extension", "extension=php_openssl.dll");
     $this->saveAllLangs();
-    //fopen(filename, mode)
   }
   
   public function onEnable(){
@@ -77,6 +76,28 @@ class Main extends PluginBase implements Listener{
     }
   }
 
+  public function getLang(){
+    $lang = strtlower($this->cfg->get("Default-Lang"));
+    if(($lang == "eng") or ($lang == "english")){
+      return $this->lang = "eng";
+    }
+    if(($lang == "fre") or ($lang == "french")){
+      return $this->lang = "fre";
+    }
+    if(($lang == "por") or ($lang == "portuguese")){
+      return $this->lang = "por";
+    }
+    if(($lang == "ger") or ($lang == "german")){
+      return $this->lang = "ger";
+    }
+    if(($lang == "chi") or ($lang == "chinese")){
+      return $this->lang = "chi";
+    }
+    if(($lang == "schi") or ($lang == "simplified chinese")){
+      return $this->lang = "schi";
+    }
+  }
+
   public function translate(String $msgType){
     $msg = $this->langFile->get($msgType);
     return $msg;
@@ -91,9 +112,9 @@ class Main extends PluginBase implements Listener{
     return $cfg->getAll();
   }
 
-  public function getLang(){
-    return $cfg->get("Default-Lang");
-  }
+ // public function getLang(){
+   // return $cfg->get("Default-Lang");
+ // }
 
   public function registerCommands(){
     if($this->isCommandEnabled("bal") == true){
