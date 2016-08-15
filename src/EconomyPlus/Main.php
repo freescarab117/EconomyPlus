@@ -57,6 +57,7 @@ class Main extends PluginBase implements Listener{
     $this->saveResource("/config.yml");
     $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
     $this->lang = $this->cfg->get("Default-Lang");
+    $this->getLang();
     $this->langFile = new Config($this->getDataFolder() . "/languages/" . $this->lang . ".yml", Config::YAML);
     $this->hasUpdates();
     $this->registerCommands();
@@ -77,24 +78,28 @@ class Main extends PluginBase implements Listener{
   }
 
   public function getLang(){
-    $lang = strtlower($this->cfg->get("Default-Lang"));
+    $lang = strtolower($this->cfg->get("Default-Lang"));
     if(($lang == "eng") or ($lang == "english")){
       return $this->lang = "eng";
     }
-    if(($lang == "fre") or ($lang == "french")){
+    else if(($lang == "fre") or ($lang == "french")){
       return $this->lang = "fre";
     }
-    if(($lang == "por") or ($lang == "portuguese")){
+    else if(($lang == "por") or ($lang == "portuguese")){
       return $this->lang = "por";
     }
-    if(($lang == "ger") or ($lang == "german")){
+    else if(($lang == "ger") or ($lang == "german")){
       return $this->lang = "ger";
     }
-    if(($lang == "chi") or ($lang == "chinese")){
+    else if(($lang == "chi") or ($lang == "chinese")){
       return $this->lang = "chi";
     }
-    if(($lang == "schi") or ($lang == "simplified chinese")){
+    else if(($lang == "schi") or ($lang == "simplified chinese")){
       return $this->lang = "schi";
+    }
+    else{
+      $this->getLogger()->error(C::RED . "Invalid Language! Using English as Default Language!");
+      return $this->lang = "eng";
     }
   }
 
