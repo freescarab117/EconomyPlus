@@ -1,0 +1,10 @@
+--- 
+INVALID-BALANCE: "無效餘額" 
+INVALID-PRICE: "無效價錢" 
+INVALID-ITEM: "無效物件" 
+INVALID-AMOUNT: "無效數量" 
+INVALID-PERMISSION: "你沒有權限執行此動作。" 
+UPDATE-FOUND: "Economy Plus有可用的更新!" 
+NO-UPDATE: "你正在使用最新版本的EconomyPlus。" 
+REQUEST-UPDATE: "更新中..."
+ ...
