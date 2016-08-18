@@ -29,6 +29,7 @@ class EconomyPlayer extends PluginBase{
   }
 
   public function getMoney(){
+    $this->cfg->reload();
     return intval($this->cfg->get(strtolower($this->player)));
   }
 
@@ -42,8 +43,10 @@ class EconomyPlayer extends PluginBase{
   }
 
   public function setMoney(int $ammount){
+    $this->cfg->reload();
     $this->cfg->set(strtolower($this->player), round($ammount));
     $this->cfg->save();
+    $this->cfg->reload();
     return true;
   }
 
@@ -53,6 +56,7 @@ class EconomyPlayer extends PluginBase{
   }
 
   public function newPlayer(){
+    $this->cfg->reload();
     $this->cfg->set(strtolower($this->player), $this->plugin->cfg->get("Default-Money"));
     $this->cfg->save();
     return true;
