@@ -83,7 +83,9 @@ class EconomyPlayer extends PluginBase{
     }
     $itm = Item::get(intval($item), 0, intval($ammount));
     $this->plugin->getServer()->getPlayer($this->player)->getInventory()->addItem($itm);
-    $this->subtractMoney($price);
+    $this->cfg->set(strtolower($this->player), $this->getMoney() - $price);
+    $this->cfg->save();
+    $this->cfg->reload();
     $this->sendMessage(C::GREEN . "You have bought " . C::YELLOW . $ammount . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . $price);
     return true;
   }
@@ -91,7 +93,9 @@ class EconomyPlayer extends PluginBase{
   public function sell(String $item, int $ammount, int $price){
     $itm = Item::get(intval($item), 0, intval($ammount));
     if($this->plugin->getServer()->getPlayer($this->player)->getInventory()->contains($itm)){
-      $this->addMoney($price);
+      $this->cfg->set(strtolower($this->player), $this->getMoney() + $price);
+      $this->cfg->save();
+      $this->cfg->reload();
       $player = $this->plugin->getServer()->getPlayer($this->player);
       if($player->getInventory()->contains($itm)){
       $removed = 0;
