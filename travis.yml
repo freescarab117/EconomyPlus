@@ -1,0 +1,18 @@
+sudo: true
+
+language: php
+php:
+ - 7.0
+
+before_script:
+ - phpenv config-rm xdebug.ini
+ - pecl install channel://pecl.php.net/pthreads-3.1.6
+ - pecl install channel://pecl.php.net/weakref-0.3.2
+ - echo | pecl install channel://pecl.php.net/yaml-2.0.0RC7
+
+script:
+ - sudo apt-get install python-software-properties
+ - sudo LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
+ - sudo apt-get update
+ - sudo apt-get-y  install php7.0 php7.0-fpm php7.0-mysql
+ - ./tests/ci.sh
