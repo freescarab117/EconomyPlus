@@ -47,12 +47,10 @@ class Main extends PluginBase implements Listener{
   private $toplist;
   
   public function onLoad(){
-    ini_set("extension", "extension=php_openssl.dll");
     $this->saveAllLangs();
   }
   
   public function onEnable(){
-    ini_set("extension", "extension=php_openssl.dll");
     @mkdir($this->getDataFolder());
     $this->saveResource("/config.yml");
     $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
