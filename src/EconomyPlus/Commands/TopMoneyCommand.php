@@ -14,7 +14,7 @@ use EconomyPlus\Tasks\TopMoneyTask;
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ * Written by Jake C <imagicalgamer@outlook.com>, August 2016
  */
 
 class TopMoneyCommand extends BaseCommand{
@@ -32,7 +32,6 @@ class TopMoneyCommand extends BaseCommand{
             $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-PERMISSION"));
             return;
         }
-        $task = new TopMoneyTask($this->plugin, $sender->getName(), $this->plugin->allMoney());
-        $task->onRun();
+        $this->plugin->getServer()->getScheduler()->scheduleAsyncTask($task = new TopMoneyTask($sender->getName(), $this->plugin->allMoney()));
     }
 }
