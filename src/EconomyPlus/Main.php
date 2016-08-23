@@ -29,7 +29,7 @@ use pocketmine\utils\Utils;
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ * Written by Jake C <imagicalgamer@outlook.com>, August 2016
  */
 
 class Main extends PluginBase implements Listener{
@@ -107,17 +107,14 @@ class Main extends PluginBase implements Listener{
   }
 
   public function getInstance(){
-    return $this;
+    return self::$instance;
   }
 
   public function allMoney(){
     $cfg = new Config($this->getDataFolder() . "/players.json", Config::JSON);
     return $cfg->getAll();
   }
-
- // public function getLang(){
-   // return $cfg->get("Default-Lang");
- // }
+  
 
   public function registerCommands(){
     if($this->isCommandEnabled("bal") == true){
