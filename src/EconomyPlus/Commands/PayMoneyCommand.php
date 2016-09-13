@@ -38,6 +38,7 @@ class PayMoneyCommand extends BaseCommand{
         }
         if(strtolower($sender->getName()) == strtolower($args[1])){
             $sender->sendMessage(C::RED . "Invalid Player");
+            return;
         }
         if(!is_numeric($args[1])){
             $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-AMOUNT"));
