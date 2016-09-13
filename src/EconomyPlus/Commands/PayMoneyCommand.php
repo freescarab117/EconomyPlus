@@ -40,12 +40,12 @@ class PayMoneyCommand extends BaseCommand{
             $sender->sendMessage(C::RED . "Invalid Player");
             return;
         }
-        if(!is_numeric($args[0])){
+        if(!is_numeric($args[1])){
             $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-AMOUNT"));
             return;
         }
         $player2 = new EconomyPlayer($this->plugin, $sender->getName());
-        if(!$player2->getMoney() >= $args[0]){
+        if(!$player2->getMoney() >= $args[1]){
             $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-BALANCE"));
             return;
         }
