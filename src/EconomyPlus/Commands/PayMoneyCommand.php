@@ -49,6 +49,7 @@ class PayMoneyCommand extends BaseCommand{
             $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-BALANCE"));
             return;
         }
+        $player2->subtractMoney($args[1]);
         $player = new EconomyPlayer($this->plugin, $args[0]);
         $player->pay($args[1], $sender->getName());
         $sender->sendMessage(C::GREEN . "Payed $" . C::YELLOW . $args[1] . C::GREEN . " to " . C::YELLOW . $args[0]);
