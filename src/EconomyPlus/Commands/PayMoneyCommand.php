@@ -36,7 +36,7 @@ class PayMoneyCommand extends BaseCommand{
             $sender->sendMessage(C::RED . "Usage: /pay <player> <ammount>");
             return;
         }
-        if(strtolower($sender->getName()) == strtolower($args[1])){
+        if(strtolower($sender->getName()) == strtolower($args[0])){
             $sender->sendMessage(C::RED . "Invalid Player");
             return;
         }
