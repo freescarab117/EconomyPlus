@@ -44,4 +44,7 @@ EnablePermShop: true
 
 # Current Version DO NOT CHANGE!
 Version: 0.1.5
+
+#Do not change!
+AccountsImported: false
 ...
