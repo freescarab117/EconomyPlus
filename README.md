@@ -1,4 +1,4 @@
-# EconomyPlus
+# EconomyPlus  [![Build Status](https://travis-ci.org/ImagicalGamer/EconomyPlus.svg?branch=master)](https://travis-ci.org/ImagicalGamer/EconomyPlus)
 
 EconomyPlus is an light Economy plugin built for PocketMine-MP (and all PHP7 alts) with many features!
 
