@@ -17,7 +17,7 @@ use pocketmine\item\ItemBlock;
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Jake C <imagicalgamer@outlook.com>, August 2016
+ * Written by Jake C <imagicalgamer@outlook.com>, September 2016
  */
 
 class EconomyPlayer extends PluginBase{
@@ -31,11 +31,17 @@ class EconomyPlayer extends PluginBase{
   private $player;
   private $plugin;
   
-  public function __construct(Main $plugin, String $player, $hasFile = null){
+  public function __construct(Plugin $plugin, String $player){
     $this->plugin = $plugin;
     $this->player = $player;
-    $this->hasFile = $hasFile;
     $this->cfg = new Config($this->plugin->getDataFolder() . "/players.json", Config::JSON);
+    if(!$this->cfg->exists(strtolower($player)))
+    {
+      $this->cfg->set(strtolower($this->player), $this->plugin->cfg->get("Default-Money"));
+      $this->cfg->save();
+      $this->cfg->reload();
+    }
+    $this->cfg->save();
   }
 
   public function getMoney(){
@@ -74,13 +80,6 @@ class EconomyPlayer extends PluginBase{
       return;
     }
     $this->setMoney($ammount + $this->getMoney());
-    return true;
-  }
-
-  public function newPlayer(){
-    $this->cfg->reload();
-    $this->cfg->set(strtolower($this->player), $this->plugin->cfg->get("Default-Money"));
-    $this->cfg->save();
     return true;
   }
 

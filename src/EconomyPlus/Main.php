@@ -23,18 +23,19 @@ use EconomyPlus\Shop\SellListener;
 use EconomyPlus\Shop\PermListener;
 use EconomyPlus\Language\Language;
 use EconomyPlus\Tasks\TopMoneyTask;
+use EconomyPlus\API\EconomyPlusAPI;
 
 use pocketmine\utils\Utils;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Jake C <imagicalgamer@outlook.com>, August 2016
+ * Written by Jake C <imagicalgamer@outlook.com>, September 2016
  */
 
 class Main extends PluginBase implements Listener{
 
-  protected $api;
+  static $api;
 
   public $lang = "";
 
@@ -53,6 +54,7 @@ class Main extends PluginBase implements Listener{
   public function onEnable(){
     @mkdir($this->getDataFolder());
     $this->saveResource("/config.yml");
+    static::$api = new EconomyPlusAPI($this);
     $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
     $this->lang = $this->cfg->get("Default-Lang");
     $this->getLang();
@@ -106,8 +108,8 @@ class Main extends PluginBase implements Listener{
     return $msg;
   }
 
-  public function getInstance(){
-    return self::$instance;
+  public static function getInstance(){
+    return static::$api;
   }
 
   public function allMoney(){
@@ -155,11 +157,6 @@ class Main extends PluginBase implements Listener{
       return false;
     }
   }
-  
-  public function myMoney(Player $p){
-    $p1 = new EconomyPlayer($this, $p->getName());
-    return($p1->getMoney());
-  }
 
   public function hasUpdates(){
     $version = $this->cfg->get("Version");
@@ -167,7 +164,6 @@ class Main extends PluginBase implements Listener{
     if($nversion > $version){
       $this->getLogger()->info(C::YELLOW . $this->translate("UPDATE-FOUND"));
       //$this->getLogger()->info(C::YELLOW . $this->translate("UPDATE-REQUEST"));
-      $this->update($nversion, true);
       return true;
     }
     $this->getLogger()->info(C::AQUA . $this->translate("NO-UPDATE"));
@@ -176,11 +172,5 @@ class Main extends PluginBase implements Listener{
 
   public function format(String $message){
     return $message;
-  }
-
-  public function update(String $version, bool $val = true){
-    if($val == false){
-      return;
-    }
   }
 }
