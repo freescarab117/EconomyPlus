@@ -39,6 +39,8 @@ class Main extends PluginBase implements Listener{
 
   public $lang = "";
 
+  public $imported;
+
   public $shop = C::GRAY . "[" . C::GREEN . "Shop" . C::GRAY . "]";
 
   public $sell = C::GRAY . "[" . C::AQUA . "Sell" . C::GRAY . "]";
@@ -57,6 +59,7 @@ class Main extends PluginBase implements Listener{
     static::$api = new EconomyPlusAPI($this);
     $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
     $this->lang = $this->cfg->get("Default-Lang");
+    $this->imported = $this->cfg->get("AccountsImported");
     $this->getLang();
     $this->langFile = new Config($this->getDataFolder() . "/languages/" . $this->lang . ".yml", Config::YAML);
     $this->hasUpdates();
@@ -65,6 +68,7 @@ class Main extends PluginBase implements Listener{
     $this->getServer()->getPluginManager()->registerEvents($this ,$this);
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     $this->getLogger()->info(C::YELLOW . "EconomyPlus v" . $this->cfg->get("Version") . " Enabled!");
+    $this->importEconomyAPI();
   }
 
   public function saveAllLangs(){
@@ -172,5 +176,30 @@ class Main extends PluginBase implements Listener{
 
   public function format(String $message){
     return $message;
+  }
+
+  public function importEconomyAPI(){
+    if($this->imported){
+      return;
+    }
+    if($this->getServer()->getPluginManager()->getPlugin("EconomyAPI") == null){
+      return;
+    }
+    $mny = \onebone\economyapi\EconomyAPI::getInstance()->getAllMoney();
+    $money = $mny["money"];
+    $count = 0;
+    $this->getLogger()->info("Importing EconomyAPI money data...");
+    foreach($money as $p => $m){
+      $count++;
+      $cfg = new Config($this->getDataFolder() . "/players.json", Config::JSON);
+      if($cfg->exists($p)){
+        $this->getLogger()->warning("Account " . $p . " exists! Overwriting...");
+      }
+      $cfg->set($p, $m);
+      $cfg->save();
+    }
+    $this->cfg->set("AccountsImported", true);
+    $this->cfg->save();
+    $this->getLogger()->info("Sucessfully imported " . $count . " accounts!");
   }
 }
