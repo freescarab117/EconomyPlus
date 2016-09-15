@@ -55,7 +55,7 @@ class Main extends PluginBase implements Listener{
   
   public function onEnable(){
     @mkdir($this->getDataFolder());
-    $this->saveResource("/config.yml");
+    $this->saveDefaultConfig();
     static::$api = new EconomyPlusAPI($this);
     $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
     $this->lang = $this->cfg->get("Default-Lang");
