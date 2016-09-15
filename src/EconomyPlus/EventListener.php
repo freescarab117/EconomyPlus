@@ -23,7 +23,7 @@ use pocketmine\item\enchantment\Enchantment;
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ * Written by Jake C <imagicalgamer@outlook.com>, September 2016
  */
 
 class EventListener extends PluginBase implements Listener{
@@ -33,15 +33,6 @@ class EventListener extends PluginBase implements Listener{
   public function __construct(Main $plugin)
   {
     $this->plugin = $plugin;
-  }
-
-  public function onJoin(PlayerJoinEvent $event){
-    $cfg = new Config($this->plugin->getDataFolder() . "/players.json", Config::JSON);
-    $player = new EconomyPlayer($this->plugin, $event->getPlayer()->getName());
-    if($cfg->exists($event->getPlayer()->getName(), true) == null){
-      $player->newPlayer();
-      return;
-    }
   }
 
   public function onDeath(PlayerDeathEvent $event){
