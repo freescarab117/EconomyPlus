@@ -127,14 +127,14 @@ class EconomyPlayer extends PluginBase{
       for($i=0;$i<36;$i++){
          $item = $player->getInventory()->getItem($i);
            if($item->getId() == $itm->getId()){
-              if($item->getCount() >= 10){
-                $item->setCount($item->getCount() - 10);
+              if($item->getCount() >= $ammount){
+                $item->setCount($item->getCount() - $ammount);
                  $player->getInventory()->setItem($i, $item);
                  $player->getInventory()->sendContents($player);
                  break;
             }    else{
-             if($item->getCount() + $removed >= 10){
-                $item->setCount($item->getCount() - (10 - $removed));
+             if($item->getCount() + $removed >= $ammount){
+                $item->setCount($item->getCount() - ($ammount - $removed));
                 $player->getInventory()->setItem($i, $item);
                 $player->getInventory()->sendContents($player);
                 break;
