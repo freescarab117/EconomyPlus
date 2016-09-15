@@ -26,8 +26,33 @@ EconomyPlus is an light Economy plugin built for PocketMine-MP (and all PHP7 alt
 | :---: | :---: | :---: | :---: |
 | [Shop] | `<itemid>` | `<amount>` | `<price>` |
 
-##Perm Shops
+##Permission Shops
 
 | Line1 | Line2 | Line3 | Line4 |
 | :---: | :---: | :---: | :---: |
 | [Perm] | `<price>` | `<perm>` | `<perm cont.>` |
+
+#API for Developers
+
+##Accessing the EconomyPlus API
+
+Below is an example class using the EconomyPlus API to check a players money!
+
+```php
+<php
+namespace MyPlugin\MyClass;
+
+use EconomyPlus\Main;
+
+class MyClass extends \pocketmine\plugin\PluginBase{
+   
+
+   public function sendMoneyPopup(\pocketmine\Player $player)
+   {
+     $player->sendPopup(Main::getInstance()->getMoney($player));
+   }
+}
+?>
+```
+
+When passing variables to functions within the API you can pass a pocketmine\Player, String, or an EconomyPlayer!
