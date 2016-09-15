@@ -7,6 +7,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\Plugin;
 
 use EconomyPlus\Main;
+use EconomyPlus\Events\Player\PlayerMoneyChangeEvent;
 
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat as C;
@@ -16,11 +17,20 @@ use pocketmine\item\ItemBlock;
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ * Written by Jake C <imagicalgamer@outlook.com>, August 2016
  */
 
 class EconomyPlayer extends PluginBase{
+  
+  const UNKNOWN = 0;
+  const REDUCE = 1;
+  const ADD = 2;
+  const SET = 3;
+  const PAY = 4;
 
+  private $player;
+  private $plugin;
+  
   public function __construct(Main $plugin, String $player, $hasFile = null){
     $this->plugin = $plugin;
     $this->player = $player;
@@ -34,6 +44,10 @@ class EconomyPlayer extends PluginBase{
   }
 
   public function subtractMoney(int $ammount){
+    $this->plugin->getServer()->getPluginManager()->callEvent($ev = new PlayerMoneyChangeEvent($this->plugin, $this, $ammount, self::REDUCE));
+    if($ev->isCancelled()){
+      return;
+    }
     $money = $this->getMoney();
     if($money > intval($ammount)){
       $this->setMoney($money - $ammount);
@@ -43,6 +57,10 @@ class EconomyPlayer extends PluginBase{
   }
 
   public function setMoney(int $ammount){
+    $this->plugin->getServer()->getPluginManager()->callEvent($ev = new PlayerMoneyChangeEvent($this->plugin, $this, $ammount, self::SET));
+    if($ev->isCancelled()){
+      return;
+    }
     $this->cfg->reload();
     $this->cfg->set(strtolower($this->player), round($ammount));
     $this->cfg->save();
@@ -51,6 +69,10 @@ class EconomyPlayer extends PluginBase{
   }
 
   public function addMoney(int $ammount){
+    $this->plugin->getServer()->getPluginManager()->callEvent($ev = new PlayerMoneyChangeEvent($this->plugin, $this, $ammount, self::ADD));
+    if($ev->isCancelled()){
+      return;
+    }
     $this->setMoney($ammount + $this->getMoney());
     return true;
   }
@@ -67,6 +89,10 @@ class EconomyPlayer extends PluginBase{
   }
 
   public function pay(int $ammount, String $payer){
+    $this->plugin->getServer()->getPluginManager()->callEvent($ev = new PlayerMoneyChangeEvent($this->plugin, $this, $ammount, self::ADD));
+    if($ev->isCancelled()){
+      return;
+    }
     $this->addMoney($ammount);
     $this->plugin->getServer()->getPlayer($this->player)->sendMessage(C::YELLOW . $payer . C::GREEN . " has payed you $" . C::YELLOW . $ammount);
   }
