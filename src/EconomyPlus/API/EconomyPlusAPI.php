@@ -40,23 +40,29 @@ class EconomyPlusAPI extends PluginBase{
     {
       return $player->getMoney();
     }
+    else{
+      return throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::getMoney() must be type of string or pocketmine\Player");
+    }
   }
 
-  public function setMoney($player, int $money)
+  public function setMoney($player, int $amount)
   {
     if($player instanceof Player)
     {
       $player = new EconomyPlayer($this->plugin, $player->getName());
-      return $player->setMoney($money);
+      return $player->setMoney($amount);
     }
     else if($player instanceof String)
     {
       $player = new EconomyPlayer($this->plugin, $player);
-      return $player->setMoney($money);
+      return $player->setMoney($amount);
     }
     else if($player instanceof EconomyPlayer)
     {
-      return $player->setMoney($money);
+      return $player->setMoney($amount);
+    }
+    else{
+      return throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::setMoney() must be type of string or pocketmine\Player");
     }
   }
 
@@ -76,6 +82,9 @@ class EconomyPlusAPI extends PluginBase{
     {
       return $player->subtractMoney($amount);
     }
+    else{
+      return throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::reduceMoney() must be type of string or pocketmine\Player");
+    }
   }
 
   public function addMoney($player, int $amount)
@@ -93,6 +102,9 @@ class EconomyPlusAPI extends PluginBase{
     else if($player instanceof EconomyPlayer)
     {
       return $player->addMoney($amount);
+    }
+    else{
+      return throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::addMoney() must be type of string or pocketmine\Player");
     }
   }
 }
