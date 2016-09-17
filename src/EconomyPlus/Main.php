@@ -167,6 +167,7 @@ class Main extends PluginBase implements Listener{
     $nversion = Utils::getUrl("https://raw.githubusercontent.com/ImagicalGamer/EconomyPlus/master/resources/version");
     if($nversion > $version){
       $this->getLogger()->info(C::YELLOW . $this->translate("UPDATE-FOUND"));
+      $this->getLogger()->info(C::YELLOW . "Download the latest update from github.com/ImagicalGamer/EconomyPlus");
       //$this->getLogger()->info(C::YELLOW . $this->translate("UPDATE-REQUEST"));
       return true;
     }
