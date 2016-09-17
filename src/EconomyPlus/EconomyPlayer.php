@@ -35,7 +35,7 @@ class EconomyPlayer extends PluginBase{
     $this->plugin = $plugin;
     $this->player = $player;
     $this->cfg = new Config($this->plugin->getDataFolder() . "/players.json", Config::JSON);
-    if($this->cfg->exists(strtolower($player)) == null)
+    if(!$this->cfg->exists(strtolower($player)))
     {
       $this->cfg->set(strtolower($this->player), $this->plugin->cfg->get("Default-Money"));
       $this->cfg->save();
