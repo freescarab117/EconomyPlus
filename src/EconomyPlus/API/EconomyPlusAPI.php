@@ -41,7 +41,7 @@ class EconomyPlusAPI extends PluginBase{
       return $player->getMoney();
     }
     else{
-      return throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::getMoney() must be type of string or pocketmine\Player");
+      throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::getMoney() must be type of string or pocketmine\Player");
     }
   }
 
@@ -50,19 +50,19 @@ class EconomyPlusAPI extends PluginBase{
     if($player instanceof Player)
     {
       $player = new EconomyPlayer($this->plugin, $player->getName());
-      return $player->setMoney($amount);
+      $player->setMoney($amount);
     }
     else if($player instanceof String)
     {
       $player = new EconomyPlayer($this->plugin, $player);
-      return $player->setMoney($amount);
+      $player->setMoney($amount);
     }
     else if($player instanceof EconomyPlayer)
     {
-      return $player->setMoney($amount);
+      $player->setMoney($amount);
     }
     else{
-      return throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::setMoney() must be type of string or pocketmine\Player");
+      throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::setMoney() must be type of string or pocketmine\Player");
     }
   }
 
@@ -71,19 +71,19 @@ class EconomyPlusAPI extends PluginBase{
     if($player instanceof Player)
     {
       $player = new EconomyPlayer($this->plugin, $player->getName());
-      return $player->subtractMoney($amount);
+      $player->subtractMoney($amount);
     }
     else if(is_string($player))
     {
       $player = new EconomyPlayer($this->plugin, $player);
-      return $player->subtractMoney($amount);
+      $player->subtractMoney($amount);
     }
     else if($player instanceof EconomyPlayer)
     {
-      return $player->subtractMoney($amount);
+      $player->subtractMoney($amount);
     }
     else{
-      return throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::reduceMoney() must be type of string or pocketmine\Player");
+      throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::reduceMoney() must be type of string or pocketmine\Player");
     }
   }
 
@@ -92,7 +92,7 @@ class EconomyPlusAPI extends PluginBase{
     if($player instanceof Player)
     {
       $player = new EconomyPlayer($this->player, $player->getName());
-      return $player->addMoney($amount);
+      $player->addMoney($amount);
     }
     else if(is_string($player))
     {
@@ -101,10 +101,10 @@ class EconomyPlusAPI extends PluginBase{
     }
     else if($player instanceof EconomyPlayer)
     {
-      return $player->addMoney($amount);
+      $player->addMoney($amount);
     }
     else{
-      return throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::addMoney() must be type of string or pocketmine\Player");
+      throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::addMoney() must be type of string or pocketmine\Player");
     }
   }
 }
