@@ -91,7 +91,7 @@ class EconomyPlusAPI extends PluginBase{
   {
     if($player instanceof Player)
     {
-      $player = new EconomyPlayer($this->player, $player->getName());
+      $player = new EconomyPlayer($this->plugin, $player->getName());
       $player->addMoney($amount);
     }
     else if(is_string($player))
