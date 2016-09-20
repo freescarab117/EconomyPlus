@@ -56,3 +56,12 @@ class MyClass extends \pocketmine\plugin\PluginBase{
 ```
 
 When passing variables to functions within the API you can pass a pocketmine\Player, String, or an EconomyPlayer!
+
+#EconomyPlus Extensions
+
+
+[WithDraw](https://github.com/ImagicalGamer/Withdraw)
+
+[SellHand](https://github.com/ImagicalGamer/SellHand)
+
+
