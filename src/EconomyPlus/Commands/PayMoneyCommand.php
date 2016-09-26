@@ -23,7 +23,7 @@ class PayMoneyCommand extends BaseCommand{
     public function __construct(Main $plugin){
         parent::__construct("pay", $plugin);
         $this->plugin = $plugin;
-        $this->setUsage(C::RED . "/pay <player> <ammount>");
+        $this->setUsage(C::RED . "/pay <player> <amount>");
         $this->setDescription("Take money from a player!");
     }
 
@@ -33,7 +33,7 @@ class PayMoneyCommand extends BaseCommand{
             return;
         }
         if(!count($args) == 2){
-            $sender->sendMessage(C::RED . "Usage: /pay <player> <ammount>");
+            $sender->sendMessage(C::RED . "Usage: /pay <player> <amount>");
             return;
         }
         if(strtolower($sender->getName()) == strtolower($args[0])){
