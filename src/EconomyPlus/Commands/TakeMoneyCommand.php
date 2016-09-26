@@ -13,7 +13,7 @@ use EconomyPlus\EconomyPlayer;
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ * Written by Jake C <imagicalgamer@outlook.com>, September 2016
  */
 
 class TakeMoneyCommand extends BaseCommand{
@@ -23,7 +23,7 @@ class TakeMoneyCommand extends BaseCommand{
     public function __construct(Main $plugin){
         parent::__construct("takemoney", $plugin);
         $this->plugin = $plugin;
-        $this->setUsage(C::RED . "/takemoney <player> <ammount>");
+        $this->setUsage(C::RED . "/takemoney <player> <amount>");
         $this->setDescription("Take money from a player!");
     }
 
@@ -33,7 +33,7 @@ class TakeMoneyCommand extends BaseCommand{
             return;
         }
         if(!count($args) == 2){
-            $sender->sendMessage(C::RED . "Usage: /takemoney <player> <ammount>");
+            $sender->sendMessage(C::RED . "Usage: /takemoney <player> <amount>");
             return;
         }
         if(!is_numeric($args[1])){
