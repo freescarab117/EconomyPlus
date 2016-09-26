@@ -18,7 +18,7 @@ use pocketmine\utils\TextFormat as C;
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Jake C <imagicalgamer@outlook.com>, July 2016
+ * Written by Jake C <imagicalgamer@outlook.com>, September 2016
  */
 
 class ShopListener extends PluginBase implements Listener{
@@ -36,7 +36,7 @@ class ShopListener extends PluginBase implements Listener{
     * Format
     * [Prefix]
     * [Item]
-    * [Ammount]
+    * [amount]
     * [Cost]
     */
     $text = $event->getLines();
@@ -61,7 +61,7 @@ class ShopListener extends PluginBase implements Listener{
     }
     $event->setLine(0, $this->prefix);
     $event->setLine(1, "Item: " . $text[1]);
-    $event->setLine(2, "Ammount: " . $text[2]);
+    $event->setLine(2, "amount: " . $text[2]);
     $event->setLine(3, "Price: " . $text[3]);
   }
   }
@@ -76,10 +76,10 @@ class ShopListener extends PluginBase implements Listener{
       if($text[0] == $this->prefix){
         $item = substr($text[1], strpos($text[1], "Item: ") + 6);   
         if(Item::fromString($item) instanceof Item){
-          $ammount = substr($text[2], strpos($text[2], "Ammount: ") + 9);
+          $amount = substr($text[2], strpos($text[2], "amount: ") + 9);
           $price = substr($text[3], strpos($text[3], "Price: ") + 7);
           if($eplayer->getMoney() >= $price){ 
-            $eplayer->buy($item, $ammount, $price);
+            $eplayer->buy($item, $amount, $price);
           }
           else{
             $eplayer->sendMessage(C::RED . "Invalid Balance");
