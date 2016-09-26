@@ -49,37 +49,37 @@ class EconomyPlayer extends PluginBase{
     return intval($this->cfg->get(strtolower($this->player)));
   }
 
-  public function subtractMoney(int $ammount){
-    $this->plugin->getServer()->getPluginManager()->callEvent($ev = new PlayerMoneyChangeEvent($this->plugin, $this, $ammount, self::REDUCE));
+  public function subtractMoney(int $amount){
+    $this->plugin->getServer()->getPluginManager()->callEvent($ev = new PlayerMoneyChangeEvent($this->plugin, $this, $amount, self::REDUCE));
     if($ev->isCancelled()){
       return;
     }
     $money = $this->getMoney();
-    if($money > intval($ammount)){
-      $this->setMoney($money - $ammount);
+    if($money > intval($amount)){
+      $this->setMoney($money - $amount);
       return true;
     }
     return false;
   }
 
-  public function setMoney(int $ammount){
-    $this->plugin->getServer()->getPluginManager()->callEvent($ev = new PlayerMoneyChangeEvent($this->plugin, $this, $ammount, self::SET));
+  public function setMoney(int $amount){
+    $this->plugin->getServer()->getPluginManager()->callEvent($ev = new PlayerMoneyChangeEvent($this->plugin, $this, $amount, self::SET));
     if($ev->isCancelled()){
       return;
     }
     $this->cfg->reload();
-    $this->cfg->set(strtolower($this->player), round($ammount));
+    $this->cfg->set(strtolower($this->player), round($amount));
     $this->cfg->save();
     $this->cfg->reload();
     return true;
   }
 
-  public function addMoney(int $ammount){
-    $this->plugin->getServer()->getPluginManager()->callEvent($ev = new PlayerMoneyChangeEvent($this->plugin, $this, $ammount, self::ADD));
+  public function addMoney(int $amount){
+    $this->plugin->getServer()->getPluginManager()->callEvent($ev = new PlayerMoneyChangeEvent($this->plugin, $this, $amount, self::ADD));
     if($ev->isCancelled()){
       return;
     }
-    $this->setMoney($ammount + $this->getMoney());
+    $this->setMoney($amount + $this->getMoney());
     return true;
   }
 
@@ -87,13 +87,13 @@ class EconomyPlayer extends PluginBase{
     $this->plugin->getServer()->getPlayer($this->player)->sendMessage($message);
   }
 
-  public function pay(int $ammount, String $payer){
-    $this->plugin->getServer()->getPluginManager()->callEvent($ev = new PlayerMoneyChangeEvent($this->plugin, $this, $ammount, self::ADD));
+  public function pay(int $amount, String $payer){
+    $this->plugin->getServer()->getPluginManager()->callEvent($ev = new PlayerMoneyChangeEvent($this->plugin, $this, $amount, self::ADD));
     if($ev->isCancelled()){
       return;
     }
-    $this->addMoney($ammount);
-    $this->plugin->getServer()->getPlayer($this->player)->sendMessage(C::YELLOW . $payer . C::GREEN . " has payed you $" . C::YELLOW . $ammount);
+    $this->addMoney($amount);
+    $this->plugin->getServer()->getPlayer($this->player)->sendMessage(C::YELLOW . $payer . C::GREEN . " has payed you $" . C::YELLOW . $amount);
   }
 
   public function canBuy(int $price){
@@ -102,21 +102,21 @@ class EconomyPlayer extends PluginBase{
     }
     return false;
   }
-  public function buy(String $item, int $ammount, int $price){
+  public function buy(String $item, int $amount, int $price){
     if($this->canBuy($price) == false){
       return false;
     }
-    $itm = Item::get(intval($item), 0, intval($ammount));
+    $itm = Item::get(intval($item), 0, intval($amount));
     $this->plugin->getServer()->getPlayer($this->player)->getInventory()->addItem($itm);
     $this->cfg->set(strtolower($this->player), $this->getMoney() - $price);
     $this->cfg->save();
     $this->cfg->reload();
-    $this->sendMessage(C::GREEN . "You have bought " . C::YELLOW . $ammount . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . $price);
+    $this->sendMessage(C::GREEN . "You have bought " . C::YELLOW . $amount . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . $price);
     return true;
   }
 
-  public function sell(String $item, int $ammount, int $price){
-    $itm = Item::get(intval($item), 0, intval($ammount));
+  public function sell(String $item, int $amount, int $price){
+    $itm = Item::get(intval($item), 0, intval($amount));
     if($this->plugin->getServer()->getPlayer($this->player)->getInventory()->contains($itm)){
       $this->cfg->set(strtolower($this->player), $this->getMoney() + $price);
       $this->cfg->save();
@@ -127,14 +127,14 @@ class EconomyPlayer extends PluginBase{
       for($i=0;$i<36;$i++){
          $item = $player->getInventory()->getItem($i);
            if($item->getId() == $itm->getId()){
-              if($item->getCount() >= $ammount){
-                $item->setCount($item->getCount() - $ammount);
+              if($item->getCount() >= $amount){
+                $item->setCount($item->getCount() - $amount);
                  $player->getInventory()->setItem($i, $item);
                  $player->getInventory()->sendContents($player);
                  break;
             }    else{
-             if($item->getCount() + $removed >= $ammount){
-                $item->setCount($item->getCount() - ($ammount - $removed));
+             if($item->getCount() + $removed >= $amount){
+                $item->setCount($item->getCount() - ($amount - $removed));
                 $player->getInventory()->setItem($i, $item);
                 $player->getInventory()->sendContents($player);
                 break;
@@ -147,7 +147,7 @@ class EconomyPlayer extends PluginBase{
       }
    }
 }
-      $this->sendMessage(C::GREEN . "You have sold " . C::YELLOW . $ammount . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . $price);
+      $this->sendMessage(C::GREEN . "You have sold " . C::YELLOW . $amount . C::GREEN . " of " . C::YELLOW . $itm->getName() . C::GREEN . " for $" . C::YELLOW . $price);
       return true;
     }
     else{
