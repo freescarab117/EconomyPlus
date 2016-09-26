@@ -23,7 +23,7 @@ EnableShop: true
 # Shop Format:
 # [Shop]
 # ItemId
-# Ammount
+# Amount
 # Price
 
 # Enable EconomyPlus Sell!
@@ -31,7 +31,7 @@ EnableSell: true
 # Sell Format:
 # [Sell]
 # ItemId
-# Ammount
+# Amount
 # Price
 
 #Enable EconomyPlus PermissionShop!
