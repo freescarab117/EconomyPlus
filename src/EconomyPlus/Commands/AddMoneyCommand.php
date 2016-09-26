@@ -23,7 +23,7 @@ class AddMoneyCommand extends BaseCommand{
     public function __construct(Main $plugin){
         parent::__construct("addmoney", $plugin);
         $this->plugin = $plugin;
-        $this->setUsage(C::RED . "/addmoney <player> <ammount>");
+        $this->setUsage(C::RED . "/addmoney <player> <amount>");
         $this->setDescription("Add money to a player!");
     }
 
@@ -33,7 +33,7 @@ class AddMoneyCommand extends BaseCommand{
             return;
         }
         if(!count($args) == 2){
-            $sender->sendMessage(C::RED . "Usage: /addmoney <player> <ammount>");
+            $sender->sendMessage(C::RED . "Usage: /addmoney <player> <amount>");
             return;
         }
             $player = new EconomyPlayer($this->plugin, $args[0]);
