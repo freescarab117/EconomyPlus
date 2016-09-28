@@ -16,7 +16,7 @@ class UpdateCheckTask extends AsyncTask{
 
   protected $current_version, $new_version, $channel, $has_update, $update_version, $messages;
 
-  public function __construct(int $version, String $channel, Array $messages){
+  public function __construct($version, String $channel, Array $messages){
     $this->current_version = $version;
     $this->channel = $channel;
     $this->messages = $messages;
