@@ -1,0 +1,18 @@
+### Issue description
+<!--- add a description of the issue so we can locate the problem -->
+Write a short description about the issue
+
+### Steps to reproduce the issue
+<!--- help us find the problem by adding steps to reproduce the issue -->
+1. ...
+2. ...
+
+### OS and versions
+<!--- help us find the problem by adding your OS, PHP version, and EconomyPlus version (Conifg Version) -->
+* Version:
+* PHP:
+* OS:
+
+### Crashdump, backtrace or other files
+<!--- please add any crashdumps, errors, or notices here -->
+* ...
