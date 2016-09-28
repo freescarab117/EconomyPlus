@@ -56,6 +56,11 @@ class Main extends PluginBase implements Listener{
   
   public function onEnable(){
     @mkdir($this->getDataFolder());
+    if(!file_exists($this->getServer()->getDataPath() . "/plugins/EconomyPlus.phar")){
+      $this->getLogger()->warning("Please insure that you have renamed EconomyPlus_vX.X.X to 'EconomyPlus.phar'");
+      $this->getServer()->getPluginManager()->disablePlugin($this);
+      return;
+    }
     $this->saveDefaultConfig();
     static::$api = new EconomyPlusAPI($this);
     $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
@@ -113,7 +118,7 @@ class Main extends PluginBase implements Listener{
     return $msg;
   }
 
-  public function updateVersion(int $version){
+  public function updateVersion($version){
     $this->cfg->set("Version", $version);
     $this->cfg->save();
     return true;
