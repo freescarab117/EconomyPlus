@@ -24,6 +24,7 @@ use EconomyPlus\Shop\PermListener;
 use EconomyPlus\Language\Language;
 use EconomyPlus\Tasks\TopMoneyTask;
 use EconomyPlus\API\EconomyPlusAPI;
+use EconomyPlus\Tasks\Updater\UpdateCheckTask;
 
 use pocketmine\utils\Utils;
 
@@ -62,7 +63,7 @@ class Main extends PluginBase implements Listener{
     $this->imported = $this->cfg->get("AccountsImported");
     $this->getLang();
     $this->langFile = new Config($this->getDataFolder() . "/languages/" . $this->lang . ".yml", Config::YAML);
-    $this->hasUpdates();
+    $this->getServer()->getScheduler()->scheduleAsyncTask($task = new UpdateCheckTask($this->cfg->get("Version"), "stable", $this->langFile->getAll(), true));
     $this->registerCommands();
     $this->registerListeners();
     $this->getServer()->getPluginManager()->registerEvents($this ,$this);
@@ -110,6 +111,16 @@ class Main extends PluginBase implements Listener{
   public function translate(String $msgType){
     $msg = $this->langFile->get($msgType);
     return $msg;
+  }
+
+  public function updateVersion(int $version){
+    $this->cfg->set("Version", $version);
+    $this->cfg->save();
+    return true;
+  }
+
+  public function getPath(){
+    return $this->getServer()->getDataPath() . "/plugins/EconomyPlus.phar";
   }
 
   public static function getInstance(){
@@ -160,19 +171,6 @@ class Main extends PluginBase implements Listener{
     else{
       return false;
     }
-  }
-
-  public function hasUpdates(){
-    $version = $this->cfg->get("Version");
-    $nversion = Utils::getUrl("https://raw.githubusercontent.com/ImagicalGamer/EconomyPlus/master/resources/version");
-    if($nversion > $version){
-      $this->getLogger()->info(C::YELLOW . $this->translate("UPDATE-FOUND"));
-      $this->getLogger()->info(C::YELLOW . "Download the latest update from github.com/ImagicalGamer/EconomyPlus");
-      //$this->getLogger()->info(C::YELLOW . $this->translate("UPDATE-REQUEST"));
-      return true;
-    }
-    $this->getLogger()->info(C::AQUA . $this->translate("NO-UPDATE"));
-    return false;
   }
 
   public function format(String $message){
