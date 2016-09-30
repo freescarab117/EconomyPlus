@@ -60,8 +60,8 @@ When passing variables to functions within the API you can pass a pocketmine\Pla
 #EconomyPlus Extensions
 
 
-[WithDraw](https://github.com/ImagicalGamer/Withdraw)
+**[WithDraw](https://github.com/ImagicalGamer/Withdraw)**
 
-[SellHand](https://github.com/ImagicalGamer/SellHand)
+**[SellHand](https://github.com/ImagicalGamer/SellHand)**
 
 
