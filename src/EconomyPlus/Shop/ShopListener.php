@@ -36,7 +36,7 @@ class ShopListener extends PluginBase implements Listener{
     * Format
     * [Prefix]
     * [Item]
-    * [amount]
+    * [Amount]
     * [Cost]
     */
     $text = $event->getLines();
@@ -76,7 +76,7 @@ class ShopListener extends PluginBase implements Listener{
       if($text[0] == $this->prefix){
         $item = substr($text[1], strpos($text[1], "Item: ") + 6);   
         if(Item::fromString($item) instanceof Item){
-          $amount = substr($text[2], strpos($text[2], "amount: ") + 9);
+          $amount = substr($text[2], strpos($text[2], "Amount: ") + 8);
           $price = substr($text[3], strpos($text[3], "Price: ") + 7);
           if($eplayer->getMoney() >= $price){ 
             $eplayer->buy($item, $amount, $price);

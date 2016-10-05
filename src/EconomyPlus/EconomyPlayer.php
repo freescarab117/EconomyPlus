@@ -106,7 +106,8 @@ class EconomyPlayer extends PluginBase{
     if($this->canBuy($price) == false){
       return false;
     }
-    $itm = Item::get(intval($item), 0, intval($amount));
+    $itm = Item::fromString($item);
+    $itm->setCount($amount);
     $this->plugin->getServer()->getPlayer($this->player)->getInventory()->addItem($itm);
     $this->cfg->set(strtolower($this->player), $this->getMoney() - $price);
     $this->cfg->save();
@@ -116,7 +117,8 @@ class EconomyPlayer extends PluginBase{
   }
 
   public function sell(String $item, int $amount, int $price){
-    $itm = Item::get(intval($item), 0, intval($amount));
+    $itm = Item::fromString($item);
+    $itm->setCount($amount);
     if($this->plugin->getServer()->getPlayer($this->player)->getInventory()->contains($itm)){
       $this->cfg->set(strtolower($this->player), $this->getMoney() + $price);
       $this->cfg->save();
