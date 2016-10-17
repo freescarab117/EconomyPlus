@@ -1,0 +1,12 @@
+---
+INVALID-BALANCE: "Не правильный баланс"
+INVALID-PRICE: "Неправильная цена"
+INVALID-ITEM: "Неправильный ID"
+INVALID-AMOUNT: "Неправильное количиство"
+
+INVALID-PERMISSION: "Недостаточно прав"
+
+UPDATE-FOUND: "Обновление EconomyPlus не найдено!"
+NO-UPDATE: "Обновлений нет, ты используеш самую новую версию EconomyPlus!"
+UPDATE-REQUEST: " Обновление..."
+...
