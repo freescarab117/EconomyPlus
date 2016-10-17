@@ -107,6 +107,9 @@ class Main extends PluginBase implements Listener{
     else if(($lang == "schi") or ($lang == "simplified chinese")){
       return $this->lang = "schi";
     }
+    else if(($lang == "rus") or ($lang == "russian")){
+      return $this->lang = "rus";
+    }
     else{
       $this->getLogger()->error(C::RED . "Invalid Language! Using English as Default Language!");
       return $this->lang = "eng";
