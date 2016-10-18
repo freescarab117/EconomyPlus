@@ -25,6 +25,7 @@ class BalanceCommand extends BaseCommand{
         $this->plugin = $plugin;
         $this->setUsage(C::RED . "/bal <player>");
         $this->setDescription("Check your money balance!");
+        $this->setAliases(array("mymoney","balance"));
     }
 
     public function execute(CommandSender $sender, $commandLabel, array $args) {
