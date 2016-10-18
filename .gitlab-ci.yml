@@ -1,0 +1,12 @@
+image: php:7.0
+ 
+stages:
+  - package
+phar:
+  stage: package
+  script:
+   - cd /builds/Pogogo007/EconomyPlus
+   - php scripts/mkplugin.php EconomyPlus EconomyPlus/src
+  artifacts:
+   paths:
+     - EconomyPlus*.phar
