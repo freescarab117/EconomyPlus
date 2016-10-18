@@ -26,6 +26,9 @@ EnableShop: true
 # Amount
 # Price
 
+#Select a custom prefix for EconomyPlus shop signs (use @ to replace §)
+ShopPrefix: '@7[@aShop@7]'
+
 # Enable EconomyPlus Sell!
 EnableSell: true
 # Sell Format:
@@ -33,6 +36,9 @@ EnableSell: true
 # ItemId
 # Amount
 # Price
+
+#Select a custom prefix for EconomyPlus sell signs (use @ to replace §)
+SellPrefix: '@7[@bSell@7]'
 
 #Enable EconomyPlus PermissionShop!
 EnablePermShop: true
@@ -42,9 +48,10 @@ EnablePermShop: true
 # Perm
 # Perm
 
-# Current Version DO NOT CHANGE!
-Version: 1
+#Select a custom prefix for EconomyPlus shop signs (use @ to replace §)
+PermPrefix: '@7[@cPerm@7]'
 
-#Do not change!
+# Don't edit anything below this line it may break the plugin!
+Version: 1
 AccountsImported: false
 ...

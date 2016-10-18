@@ -65,6 +65,9 @@ class Main extends PluginBase implements Listener{
     static::$api = new EconomyPlusAPI($this);
     $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
     $this->lang = $this->cfg->get("Default-Lang");
+    $this->shop = str_replace("@", "§", $this->cfg->get("ShopPrefix"));
+    $this->sell = str_replace("@", "§", $this->cfg->get("SellPrefix"));
+    $this->perm = str_replace("@", "§", $this->cfg->get("PermPrefix"));
     $this->imported = $this->cfg->get("AccountsImported");
     $this->getLang();
     $this->langFile = new Config($this->getDataFolder() . "/languages/" . $this->lang . ".yml", Config::YAML);
