@@ -2,7 +2,7 @@
 namespace EconomyPlus\Commands;
 
 use EconomyPlus\BaseFiles\BaseCommand;
-use EconomyPlus\Main;
+use EconomyPlus\EconomyPlus;
 use pocketmine\Player;
 use pocketmine\command\CommandSender;
 
@@ -20,7 +20,7 @@ class AddMoneyCommand extends BaseCommand{
 
     private $plugin;
 
-    public function __construct(Main $plugin){
+    public function __construct(EconomyPlus $plugin){
         parent::__construct("addmoney", $plugin);
         $this->plugin = $plugin;
         $this->setUsage(C::RED . "/addmoney <player> <amount>");

@@ -7,7 +7,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
 use pocketmine\Player;
 
-use EconomyPlus\Main;
+use EconomyPlus\EconomyPlus;
 
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerDeathEvent;
@@ -30,7 +30,7 @@ class EventListener extends PluginBase implements Listener{
 
   protected $plugin;
 
-  public function __construct(Main $plugin)
+  public function __construct(EconomyPlus $plugin)
   {
     $this->plugin = $plugin;
   }

@@ -7,7 +7,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
 use pocketmine\Player;
 use pocketmine\item\Item;
-use EconomyPlus\Main;
+use EconomyPlus\EconomyPlus;
 use EconomyPlus\EconomyPlayer;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\player\PlayerInteractEvent;
@@ -25,7 +25,7 @@ class PermListener extends PluginBase implements Listener{
 
   protected $plugin;
 
-  public function __construct(Main $plugin, String $prefix)
+  public function __construct(EconomyPlus $plugin, String $prefix)
   {
     $this->plugin = $plugin;
     $this->prefix = $prefix;

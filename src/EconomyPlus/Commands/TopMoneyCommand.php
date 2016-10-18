@@ -2,7 +2,7 @@
 namespace EconomyPlus\Commands;
 
 use EconomyPlus\BaseFiles\BaseCommand;
-use EconomyPlus\Main;
+use EconomyPlus\EconomyPlus;
 use pocketmine\Player;
 use pocketmine\command\CommandSender;
 
@@ -21,7 +21,7 @@ class TopMoneyCommand extends BaseCommand{
 
     private $plugin;
 
-    public function __construct(Main $plugin){
+    public function __construct(EconomyPlus $plugin){
         parent::__construct("topmoney", $plugin);
         $this->plugin = $plugin;
         $this->setDescription("View the topmoney list!");

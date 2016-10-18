@@ -4,7 +4,7 @@ namespace EconomyPlus\Events;
 use pocketmine\event\plugin\PluginEvent;
 use pocketmine\event\Cancellable;
 
-use EconomyPlus\Main;
+use EconomyPlus\EconomyPlus;
 use EconomyPlus\EconomyPlayer;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
@@ -19,7 +19,7 @@ class EconomyPlayerEvent extends PluginEvent implements Cancellable{
 
 	public static $handlerList;
 	
-	public function __construct(Main $plugin, EconomyPlayer $player){
+	public function __construct(EconomyPlus $plugin, EconomyPlayer $player){
 		parent::__construct($plugin);
 		$this->player = $player;
 	}

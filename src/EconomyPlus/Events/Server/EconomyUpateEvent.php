@@ -1,7 +1,7 @@
 <?php
 namespace EconomyPlus\Events\Server;
 
-use EconomyPlus\Main;
+use EconomyPlus\EconomyPlus;
 use EconomyPlus\Events\EconomyServerEvent;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
@@ -16,7 +16,7 @@ class EconomyUpdateEvent extends EconomyServerEvent{
 
 	public static $handlerList;
 	
-	public function __construct(Main $plugin, $version){
+	public function __construct(EconomyPlus $plugin, $version){
 		parent::__construct($plugin);
 		$this->version = $version;
 	}

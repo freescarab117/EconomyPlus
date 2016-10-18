@@ -34,7 +34,7 @@ use pocketmine\utils\Utils;
  * Written by Jake C <imagicalgamer@outlook.com>, September 2016
  */
 
-class Main extends PluginBase implements Listener{
+class EconomyPlus extends PluginBase implements Listener{
 
   static $api;
 
@@ -55,11 +55,11 @@ class Main extends PluginBase implements Listener{
   }
   
   public function onEnable(){
+    $auto = true;
     @mkdir($this->getDataFolder());
     if(!file_exists($this->getServer()->getDataPath() . "/plugins/EconomyPlus.phar")){
       $this->getLogger()->warning("Please insure that you have renamed EconomyPlus_vX.X.X to 'EconomyPlus.phar'");
-      $this->getServer()->getPluginManager()->disablePlugin($this);
-      return;
+      $auto = false;
     }
     $this->saveDefaultConfig();
     static::$api = new EconomyPlusAPI($this);
@@ -71,12 +71,14 @@ class Main extends PluginBase implements Listener{
     $this->imported = $this->cfg->get("AccountsImported");
     $this->getLang();
     $this->langFile = new Config($this->getDataFolder() . "/languages/" . $this->lang . ".yml", Config::YAML);
-    $this->getServer()->getScheduler()->scheduleAsyncTask($task = new UpdateCheckTask($this->cfg->get("Version"), "stable", $this->langFile->getAll(), true));
+    if($auto){
+      $this->getServer()->getScheduler()->scheduleAsyncTask($task = new UpdateCheckTask($this->cfg->get("Version"), "stable", $this->langFile->getAll(), true));
+    }
     $this->registerCommands();
     $this->registerListeners();
     $this->getServer()->getPluginManager()->registerEvents($this ,$this);
     $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-    $this->getLogger()->info(C::YELLOW . "EconomyPlus v" . $this->cfg->get("Version") . " Enabled!");
+    $this->getLogger()->info(C::YELLOW . "EconomyPlus v" . $this->getDescription()->getVersion() . " Enabled!");
     $this->importEconomyAPI();
   }
 
@@ -131,7 +133,7 @@ class Main extends PluginBase implements Listener{
   }
 
   public function getPath(){
-    return $this->getServer()->getDataPath() . "/plugins/EconomyPlus.phar";
+    return str_replace("/src/EconomyPlus/EconomyPlus.php", "", __FILE__);
   }
 
   public static function getInstance(){

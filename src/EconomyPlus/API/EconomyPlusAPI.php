@@ -8,7 +8,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\plugin\Plugin;
 
-use EconomyPlus\Main;
+use EconomyPlus\EconomyPlus;
 use EconomyPlus\EconomyPlayer;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
@@ -19,7 +19,7 @@ use EconomyPlus\EconomyPlayer;
 
 class EconomyPlusAPI extends PluginBase{
 
-  public function __construct(Main $plugin)
+  public function __construct(EconomyPlus $plugin)
   {
     $this->plugin = $plugin;
   }

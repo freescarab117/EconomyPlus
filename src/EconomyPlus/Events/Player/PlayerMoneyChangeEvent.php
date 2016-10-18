@@ -1,7 +1,7 @@
 <?php
 namespace EconomyPlus\Events\Player;
 
-use EconomyPlus\Main;
+use EconomyPlus\EconomyPlus;
 use EconomyPlus\EconomyPlayer;
 use EconomyPlus\Events\EconomyPlayerEvent;
 
@@ -18,7 +18,7 @@ class PlayerMoneyChangeEvent extends EconomyPlayerEvent{
 	private $amount;
 	private $reason;
 	
-	public function __construct(Main $plugin, EconomyPlayer $player, Int $amount, $reason = EconomyPlayer::UNKNOWN){
+	public function __construct(EconomyPlus $plugin, EconomyPlayer $player, Int $amount, $reason = EconomyPlayer::UNKNOWN){
 		parent::__construct($plugin, $player);
 		$this->player = $player;
 		$this->amount = $amount;

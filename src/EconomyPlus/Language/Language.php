@@ -6,7 +6,7 @@ use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\Plugin;
 
-use EconomyPlus\Main;
+use EconomyPlus\EconomyPlus;
 
 use pocketmine\utils\Config;
 
@@ -18,7 +18,7 @@ use pocketmine\utils\Config;
 
 class Language extends PluginBase{
 
-  public function __construct(Main $plugin, String $message, String $lang = "eng", String $type = null){
+  public function __construct(EconomyPlus $plugin, String $message, String $lang = "eng", String $type = null){
     $this->plugin = $plugin;
     $this->message = $message;
     $this->lang = $lang;
