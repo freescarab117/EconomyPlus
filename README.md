@@ -16,7 +16,9 @@ EconomyPlus is an light Economy plugin built for PocketMine-MP (and all PHP7 alt
 | /topmoney | NA | See the TopMoney Stats! |
 
 # Download
-Want to download the latest phar? Get it from here https://gitlab.com/Pogogo007/EconomyPlus/pipelines
+Want to download the latest phar? Get it from [here](https://gitlab.com/Pogogo007/EconomyPlus/pipelines)
+Note: The Download updates every hour
+
 #Shops
 
 ##Sell Shop
