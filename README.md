@@ -119,5 +119,13 @@ class MyClass extends \pocketmine\plugin\PluginBase{
 }
 ?>
 ```
+When passing variables to methods within the API you can pass a pocketmine\Player, String, or an EconomyPlayer!
 
-When passing variables to functions within the API you can pass a pocketmine\Player, String, or an EconomyPlayer!
+##API Methods
+
+| Method | Argument | Output |
+| :---: | :---: | :---: |
+| `addMoney()`  | `pocketmine\Player`, `int`| `bool` |
+| `getMoney()`  | `pocketmine\Player`| `int` |
+| `setMoney()`  | `pocketmine\Player`, `int`| `null` |
+| `reduceMoney()`  | `pocketmine\Player`, `int`| `null` |
