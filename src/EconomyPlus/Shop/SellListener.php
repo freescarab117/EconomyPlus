@@ -6,14 +6,17 @@ use pocketmine\plugin\PluginBase;
 
 use pocketmine\Server;
 use pocketmine\Player;
+
 use pocketmine\item\Item;
+
 use EconomyPlus\EconomyPlus;
-use EconomyPlus\EconomyPlayer;
+
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\block\BlockBreakEvent;
+
 use pocketmine\tile\Sign;
-use pocketmine\utils\TextFormat as C;
+use pocketmine\utils\TextFormat;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -68,7 +71,6 @@ class SellListener extends PluginBase implements Listener{
 
   public function onInteract(PlayerInteractEvent $event){
     $player = $event->getPlayer();
-    $eplayer = new EconomyPlayer($this->plugin, $player->getName());
     $blk = $event->getBlock();
     $tile = $player->getLevel()->getTile($blk);
     if($tile instanceof Sign){
@@ -78,7 +80,7 @@ class SellListener extends PluginBase implements Listener{
         if(Item::fromString($item) instanceof Item){
           $amount = substr($text[2], strpos($text[2], "Amount: ") + 8);
           $price = substr($text[3], strpos($text[3], "Price: ") + 7);
-            $eplayer->sell($item, $amount, $price);
+          EconomyPlus::sell($player, $item, $ammount, $price);
         }
       }
     }

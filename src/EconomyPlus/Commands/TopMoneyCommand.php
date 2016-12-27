@@ -1,15 +1,14 @@
 <?php
 namespace EconomyPlus\Commands;
 
-use EconomyPlus\BaseFiles\BaseCommand;
 use EconomyPlus\EconomyPlus;
+use EconomyPlus\Tasks\TopMoneyTask;
+
 use pocketmine\Player;
+
 use pocketmine\command\CommandSender;
 
 use pocketmine\utils\TextFormat as C;
-
-use EconomyPlus\EconomyPlayer;
-use EconomyPlus\Tasks\TopMoneyTask;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -32,6 +31,6 @@ class TopMoneyCommand extends BaseCommand{
             $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-PERMISSION"));
             return;
         }
-        $this->plugin->getServer()->getScheduler()->scheduleAsyncTask($task = new TopMoneyTask($sender->getName(), $this->plugin->allMoney()));
+        $this->plugin->getServer()->getScheduler()->scheduleAsyncTask($task = new TopMoneyTask($sender->getName(), EconomyPlus::getProvider()->getAllMoney()));
     }
 }

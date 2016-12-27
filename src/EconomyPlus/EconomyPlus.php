@@ -8,81 +8,48 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\plugin\Plugin;
 
-use pocketmine\utils\TextFormat as C;
+use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
-
+use pocketmine\utils\Utils;
 
 use EconomyPlus\Commands\BalanceCommand;
 use EconomyPlus\Commands\AddMoneyCommand;
 use EconomyPlus\Commands\TakeMoneyCommand;
 use EconomyPlus\Commands\PayMoneyCommand;
 use EconomyPlus\Commands\TopMoneyCommand;
+
 use EconomyPlus\EventListener;
+
 use EconomyPlus\Shop\ShopListener;
 use EconomyPlus\Shop\SellListener;
 use EconomyPlus\Shop\PermListener;
-use EconomyPlus\Language\Language;
-use EconomyPlus\Tasks\TopMoneyTask;
-use EconomyPlus\API\EconomyPlusAPI;
-use EconomyPlus\Tasks\Updater\UpdateCheckTask;
 
-use pocketmine\utils\Utils;
+use EconomyPlus\API\EconomyPlusAPI;
+
+use EconomyPlus\Provider\JsonProvider;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Jake C <imagicalgamer@outlook.com>, September 2016
+ * Written by Jake C <imagicalgamer@outlook.com>, December 2016
  */
 
 class EconomyPlus extends PluginBase implements Listener{
 
   static $api;
 
+  public $mysql_settings = ["host" => '127.0.0.1', "port" => 3303, "user" => null, "password" => null, "db_name" => null];
+
   public $lang = "";
 
-  public $imported;
+  protected $provider = "json";
 
-  public $shop = C::GRAY . "[" . C::GREEN . "Shop" . C::GRAY . "]";
+  public $shop = TextFormat::GRAY . "[" . TextFormat::GREEN . "Shop" . TextFormat::GRAY . "]";
 
-  public $sell = C::GRAY . "[" . C::AQUA . "Sell" . C::GRAY . "]";
-
-  public $perm = C::GRAY . "[" . C::RED . "Perm" . C::GRAY . "]";
-
-  private $toplist;
+  public $sell = TextFormat::GRAY . "[" . TextFormat::AQUA . "Sell" . TextFormat::GRAY . "]";
   
-  public function onLoad(){
-    $this->saveAllLangs();
-  }
-  
-  public function onEnable(){
-    $auto = true;
-    @mkdir($this->getDataFolder());
-    if(!file_exists($this->getServer()->getDataPath() . "/plugins/EconomyPlus.phar")){
-      $this->getLogger()->warning("Please insure that you have renamed EconomyPlus_vX.X.X to 'EconomyPlus.phar'");
-      $auto = false;
-    }
-    $this->saveDefaultConfig();
-    static::$api = new EconomyPlusAPI($this);
-    $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
-    $this->lang = $this->cfg->get("Default-Lang");
-    $this->shop = str_replace("@", "§", $this->cfg->get("ShopPrefix"));
-    $this->sell = str_replace("@", "§", $this->cfg->get("SellPrefix"));
-    $this->perm = str_replace("@", "§", $this->cfg->get("PermPrefix"));
-    $this->imported = $this->cfg->get("AccountsImported");
-    $this->getLang();
-    $this->langFile = new Config($this->getDataFolder() . "/languages/" . $this->lang . ".yml", Config::YAML);
-    if($auto){
-      $this->getServer()->getScheduler()->scheduleAsyncTask($task = new UpdateCheckTask($this->cfg->get("Version"), "stable", $this->langFile->getAll(), true));
-    }
-    $this->registerCommands();
-    $this->registerListeners();
-    $this->getServer()->getPluginManager()->registerEvents($this ,$this);
-    $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-    $this->getLogger()->info(C::YELLOW . "EconomyPlus v" . $this->getDescription()->getVersion() . " Enabled!");
-    $this->importEconomyAPI();
-  }
-
-  public function saveAllLangs(){
+  public function onLoad()
+  {
     foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->getFile() . "resources/languages")) as $resource){
       $resource = str_replace("\\", "/", $resource);
       $resarr = explode("/", $resource);
@@ -91,127 +58,159 @@ class EconomyPlus extends PluginBase implements Listener{
       }
     }
   }
+  
+  public function onEnable()
+  {
+    @mkdir($this->getDataFolder());
+    $this->saveDefaultConfig();
 
-  public function getLang(){
+    $this->cfg = new Config($this->getDataFolder() . "/config.yml", Config::YAML);
+    $this->cfg->save();
+    $this->lang = $this->cfg->get("Default-Lang");
+    $this->getLang();
+    $this->langFile = new Config($this->getDataFolder() . "/languages/" . $this->lang . ".yml", Config::YAML);
+
+    //if(strtolower($this->cfg->get("provider")) == "json")
+    //{
+      $this->provider = new JsonProvider($this);
+    //}
+    /*elseif(strtolower($this->cfg->get("provider")) == "mysql")
+    {
+      $this->mysql_settings = $this->cfg->get("mysql");
+      $this->provider = new MySQLProvider($this, $this->mysql_settings);
+    */}
+
+    static::$api = new EconomyPlusAPI($this, $this->provider);
+
+    $this->shop = str_replace("@", "§", $this->cfg->get("ShopPrefix"));
+    $this->sell = str_replace("@", "§", $this->cfg->get("SellPrefix"));
+    $this->perm = str_replace("@", "§", $this->cfg->get("PermPrefix"));
+
+    $this->getServer()->getCommandMap()->register("bal", new BalanceCommand($this));
+    $this->getServer()->getCommandMap()->register("addmoney", new AddMoneyCommand($this));
+    $this->getServer()->getCommandMap()->register("takemoney", new TakeMoneyCommand($this));
+    $this->getServer()->getCommandMap()->register("pay", new PayMoneyCommand($this));
+    $this->getServer()->getCommandMap()->register("topmoney", new TopMoneyCommand($this));
+
+    $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+    $this->getServer()->getPluginManager()->registerEvents(new ShopListener($this, $this->shop), $this);
+    $this->getServer()->getPluginManager()->registerEvents(new SellListener($this, $this->sell), $this);
+    $this->getLogger()->info(TextFormat::YELLOW . "EconomyPlus v" . $this->getDescription()->getVersion() . " Enabled!");
+  }
+
+  public function getLang()
+  {
     $lang = strtolower($this->cfg->get("Default-Lang"));
     if(($lang == "eng") or ($lang == "english")){
       return $this->lang = "eng";
     }
-    else if(($lang == "fre") or ($lang == "french")){
+    elseif(($lang == "fre") or ($lang == "french")){
       return $this->lang = "fre";
     }
-    else if(($lang == "por") or ($lang == "portuguese")){
+    elseif(($lang == "por") or ($lang == "portuguese")){
       return $this->lang = "por";
     }
-    else if(($lang == "ger") or ($lang == "german")){
+    elseif(($lang == "ger") or ($lang == "german")){
       return $this->lang = "ger";
     }
-    else if(($lang == "chi") or ($lang == "chinese")){
+    elseif(($lang == "chi") or ($lang == "chinese")){
       return $this->lang = "chi";
     }
-    else if(($lang == "schi") or ($lang == "simplified chinese")){
+    elseif(($lang == "schi") or ($lang == "simplified chinese")){
       return $this->lang = "schi";
     }
-    else if(($lang == "rus") or ($lang == "russian")){
+    elseif(($lang == "rus") or ($lang == "russian")){
       return $this->lang = "rus";
     }
     else{
-      $this->getLogger()->error(C::RED . "Invalid Language! Using English as Default Language!");
+      $this->getLogger()->error(TextFormat::RED . "Invalid Language! Using English as Default Language!");
       return $this->lang = "eng";
     }
   }
 
-  public function translate(String $msgType){
+  public function translate(String $msgType)
+  {
     $msg = $this->langFile->get($msgType);
-    return $msg;
+    return (string) $msg;
   }
 
-  public function updateVersion($version){
-    $this->cfg->set("Version", $version);
-    $this->cfg->save();
-    return true;
-  }
-
-  public function getPath(){
-    return str_replace("/src/EconomyPlus/EconomyPlus.php", "", __FILE__);
-  }
-
-  public static function getInstance(){
+  public static function getInstance()
+  {
     return static::$api;
   }
 
-  public function allMoney(){
-    $cfg = new Config($this->getDataFolder() . "/players.json", Config::JSON);
-    return $cfg->getAll();
-  }
-  
-
-  public function registerCommands(){
-    if($this->isCommandEnabled("bal") == true){
-      $this->getServer()->getCommandMap()->register("bal", new BalanceCommand($this));
-    }
-    if($this->isCommandEnabled("addmoney") == true){
-      $this->getServer()->getCommandMap()->register("addmoney", new AddMoneyCommand($this));
-    }
-    if($this->isCommandEnabled("takemoney") == true){
-      $this->getServer()->getCommandMap()->register("takemoney", new TakeMoneyCommand($this));
-    }
-    if($this->isCommandEnabled("pay") == true){
-      $this->getServer()->getCommandMap()->register("pay", new PayMoneyCommand($this));
-    }
-    if($this->isCommandEnabled("topmoney") == true){
-      $this->getServer()->getCommandMap()->register("topmoney", new TopMoneyCommand($this));
-    }
+  public static function getProvider()
+  {
+    return static::$provider;
   }
 
-  public function registerListeners(){
-    if($this->cfg->get("EnableShop") === true){
+  public function registerListeners()
+  {
+    if(boolval($this->cfg->get("EnableShop")) === true){
       $this->getServer()->getPluginManager()->registerEvents(new ShopListener($this, $this->shop), $this);
     }
-    if($this->cfg->get("EnableSell") === true){
+    if(boolval($this->cfg->get("EnableSell")) === true){
       $this->getServer()->getPluginManager()->registerEvents(new SellListener($this, $this->sell), $this);
-    }
-    if($this->cfg->get("EnablePermShop") === true){
-      $this->getServer()->getPluginManager()->registerEvents(new PermListener($this, $this->perm), $this);
     }
     return true;
   }
 
-  public function isCommandEnabled(String $cmd){
-    if($this->cfg->get($cmd . "-Command") == true){
+  public static function sell(Player $player, String $item, Int $ammount, Int $price)
+  {
+    $itm = Item::fromString($item);
+    $itm->setCount($amount);
+    if($player->getInventory()->contains($itm)){
+      $this->provider->setMoney(strtolower($player), $this->provider->getMoney($player) + $price);
+      if($player->getInventory()->contains($itm)){
+        $removed = 0;
+        for($i= 0; $i < 36; $i++){
+          $item = $player->getInventory()->getItem($i);
+            if($item->getId() == $itm->getId()){
+                if($item->getCount() >= $amount){
+                  $item->setCount($item->getCount() - $amount);
+                  $player->getInventory()->setItem($i, $item);
+                  $player->getInventory()->sendContents($player);
+                  break;
+              }    
+              else
+              {
+              if($item->getCount() + $removed >= $amount){
+                $item->setCount($item->getCount() - ($amount - $removed));
+                $player->getInventory()->setItem($i, $item);
+                $player->getInventory()->sendContents($player);
+                break;
+             }
+             else{
+                $removed += $item->getCount();
+                $item->setCount(0);
+                $player->getInventory()->setItem($i, $item);
+             }
+            }
+          }
+        }
+    }
+    $player->sendMessage(TextFormat::GREEN . "You have sold " . TextFormat::YELLOW . $amount . TextFormat::GREEN . " of " . TextFormat::YELLOW . $itm->getName() . TextFormat::GREEN . " for $" . TextFormat::YELLOW . $price);
       return true;
     }
     else{
+      if($itm instanceof ItemBlock){
+        $player->sendMessage(TextFormat::GREEN . "You do not have " . TextFormat::YELLOW . $itm->getBlock()->getName());
+        return false;
+      }
+      $player->sendMessage(TextFormat::GREEN . "You do not have " . TextFormat::YELLOW . $itm->getAmount() . TextFormat::GREEN . " of " . TextFormat::YELLOW . $item->getName());
+    }
+  }
+
+  public static function buy(Player $player, String $item, int $amount, int $price){
+    if($this->provider->getMoney($player) <= $amount)
+    {
       return false;
     }
-  }
-
-  public function format(String $message){
-    return $message;
-  }
-
-  public function importEconomyAPI(){
-    if($this->imported){
-      return;
-    }
-    if($this->getServer()->getPluginManager()->getPlugin("EconomyAPI") == null){
-      return;
-    }
-    $mny = \onebone\economyapi\EconomyAPI::getInstance()->getAllMoney();
-    $money = $mny["money"];
-    $count = 0;
-    $this->getLogger()->info("Importing EconomyAPI money data...");
-    foreach($money as $p => $m){
-      $count++;
-      $cfg = new Config($this->getDataFolder() . "/players.json", Config::JSON);
-      if($cfg->exists($p)){
-        $this->getLogger()->warning("Account " . $p . " exists! Overwriting...");
-      }
-      $cfg->set($p, $m);
-      $cfg->save();
-    }
-    $this->cfg->set("AccountsImported", true);
-    $this->cfg->save();
-    $this->getLogger()->info("Sucessfully imported " . $count . " accounts!");
+    $itm = Item::fromString($item);
+    $itm->setCount($amount);
+    $player->getInventory()->addItem($itm);
+    $this->provider->setMoney($player, $this->provider->getMoney($player) - $price);
+    $player->sendMessage(TextFormat::GREEN . "You have bought " . TextFormat::YELLOW . $amount . TextFormat::GREEN . " of " . TextFormat::YELLOW . $itm->getName() . TextFormat::GREEN . " for $" . TextFormat::YELLOW . $price);
+    return true;
   }
 }

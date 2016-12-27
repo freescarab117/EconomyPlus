@@ -1,14 +1,13 @@
 <?php
 namespace EconomyPlus\Commands;
 
-use EconomyPlus\BaseFiles\BaseCommand;
 use EconomyPlus\EconomyPlus;
+
 use pocketmine\Player;
+
 use pocketmine\command\CommandSender;
 
 use pocketmine\utils\TextFormat as C;
-
-use EconomyPlus\EconomyPlayer;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -44,14 +43,12 @@ class PayMoneyCommand extends BaseCommand{
             $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-AMOUNT"));
             return;
         }
-        $player2 = new EconomyPlayer($this->plugin, $sender->getName());
         if(!$player2->getMoney() >= $args[1]){
             $sender->sendMessage(C::RED . $this->plugin->translate("INVALID-BALANCE"));
             return;
         }
-        $player2->subtractMoney($args[1]);
-        $player = new EconomyPlayer($this->plugin, $args[0]);
-        $player->pay($args[1], $sender->getName());
-        $sender->sendMessage(C::GREEN . "Payed $" . C::YELLOW . $args[1] . C::GREEN . " to " . C::YELLOW . $args[0]);
+        EconomyPlus::getProvider()->setMoney($sender, EconomyPlus::getProvider()->getMoney($sender));
+        EconomyPlus::getProvider()->setMoney($args[0], EconomyPlus::getProvider()->getMoney($args[0]) + abs($args[1]));
+        $sender->sendMessage(C::GREEN . "Payed $" . C::YELLOW . $args[1] . C::GREEN . " to " . C::YELLOW . abs($args[0]));
     }
 }

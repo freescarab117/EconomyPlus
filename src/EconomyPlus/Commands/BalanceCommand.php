@@ -1,7 +1,6 @@
 <?php
 namespace EconomyPlus\Commands;
 
-use EconomyPlus\BaseFiles\BaseCommand;
 use EconomyPlus\EconomyPlus;
 use pocketmine\Player;
 use pocketmine\command\CommandSender;
@@ -30,8 +29,7 @@ class BalanceCommand extends BaseCommand{
 
     public function execute(CommandSender $sender, $commandLabel, array $args) {
     	if($sender instanceof Player){
-    		$player = new EconomyPlayer($this->plugin, $sender->getName());
-    		$player->sendMessage(C::GREEN . "You have $" . $player->getMoney());
+    		$player->sendMessage(C::GREEN . "You have $" . EconomyPlus::getProvider()->getMoney($sender));
     	}
     }
 }

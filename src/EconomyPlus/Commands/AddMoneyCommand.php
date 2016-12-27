@@ -1,14 +1,11 @@
 <?php
 namespace EconomyPlus\Commands;
 
-use EconomyPlus\BaseFiles\BaseCommand;
 use EconomyPlus\EconomyPlus;
 use pocketmine\Player;
 use pocketmine\command\CommandSender;
 
 use pocketmine\utils\TextFormat as C;
-
-use EconomyPlus\EconomyPlayer;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -36,8 +33,7 @@ class AddMoneyCommand extends BaseCommand{
             $sender->sendMessage(C::RED . "Usage: /addmoney <player> <amount>");
             return;
         }
-            $player = new EconomyPlayer($this->plugin, $args[0]);
-            $player->addMoney($args[1]);
+            EconomyPlus::getProvider()->addMoney($args[0], EconomyPlus::getProvider()->getMoney($args[0]) + $args[1]);
             $sender->sendMessage(C::GREEN . "Added $" . C::YELLOW . $args[1] . C::GREEN . " to " . C::YELLOW . $args[0]);
         }
     }

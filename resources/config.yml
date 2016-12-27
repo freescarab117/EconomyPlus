@@ -4,19 +4,22 @@
 # Money a player starts out with
 Default-Money: 1000
 
-# Money someone earns when they kill another player
-Death-Money: 200
-
 # Default Language EconomyPlus Uses!
 # Avalible Languages: "eng" or "english", "fre" or "french", "ger" or "german", "chi" or "chinese", "schi" or "simplified chinese", "rus" or "russian"
 Default-Lang: "eng"
 
-# Enable Commands
-bal-Command: true
-addmoney-Command: true
-takemoney-Command: true
-pay-Command: true
-topmoney-Command: true
+
+# Select how EconomyPlus data is stored! (JSON, or MySQL)
+provider: JSON
+# Enables the usage of MySQL!
+# (If unable to connect to a server JSON will be used, EconomyPlus will dynamically update MySQL once connected)
+mysql: [
+  host: 127.0.0.1,
+  port: 3303,
+  user: economyplus,
+  password: economyplus,
+  db_name: economyplus_users
+  ]
 
 # Enable EconomyPlus Shop!
 EnableShop: true
@@ -39,19 +42,4 @@ EnableSell: true
 
 #Select a custom prefix for EconomyPlus sell signs (use @ to replace §)
 SellPrefix: '@7[@bSell@7]'
-
-#Enable EconomyPlus PermissionShop!
-EnablePermShop: true
-# Format:
-# [Perm]
-# Price
-# Perm
-# Perm
-
-#Select a custom prefix for EconomyPlus shop signs (use @ to replace §)
-PermPrefix: '@7[@cPerm@7]'
-
-# Don't edit anything below this line it may break the plugin!
-Version: 1
-AccountsImported: false
 ...

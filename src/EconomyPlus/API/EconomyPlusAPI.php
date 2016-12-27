@@ -2,109 +2,93 @@
 namespace EconomyPlus\API;
 
 use pocketmine\Player;
-use pocketmine\Server;
-
-use pocketmine\plugin\PluginBase;
-use pocketmine\event\Listener;
-use pocketmine\plugin\Plugin;
 
 use EconomyPlus\EconomyPlus;
-use EconomyPlus\EconomyPlayer;
+
+use EconomyPlus\Provider\EconomyProvider;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Jake C <imagicalgamer@outlook.com>, September 2016
+ * Written by Jake C <imagicalgamer@outlook.com>, December 2016
  */
 
-class EconomyPlusAPI extends PluginBase{
+class EconomyPlusAPI{
 
-  public function __construct(EconomyPlus $plugin)
+  protected $plugin, $provider;
+
+  public function __construct(EconomyPlus $plugin, EconomyProvider $provider)
   {
     $this->plugin = $plugin;
+    $this->provider = $provider;
+  }
+
+  public function setMoney($player, int $ammount)
+  {
+  	if($player instanceof Player)
+  	{
+  		$this->provider->setMoney($player->getName(), $ammount);
+  		return true;
+  	}
+  	elseif(is_string($player))
+  	{
+  		$this->provider->setMoney($player, $ammount);
+  		return true;
+  	}
+  	else
+  	{
+  		return false;
+  	}
   }
 
   public function getMoney($player)
   {
-    if($player instanceof Player)
-    {
-      $player = new EconomyPlayer($this->plugin, $player->getName());
-      return $player->getMoney();
-    }
-    else if(is_string($player))
-    {
-      $player = new EconomyPlayer($this->plugin, $player);
-      return $player->getMoney();
-    }
-    else if($player instanceof EconomyPlayer)
-    {
-      return $player->getMoney();
-    }
-    else{
-      throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::getMoney() must be type of string or pocketmine\Player");
-    }
+  	if($player instanceof Player)
+  	{
+  		return $this->provider->getMoney($player->getName());
+  	}
+  	elseif(is_string($player))
+  	{
+  		return $this->provider->getMoney($player);
+  	}
+  	else
+  	{
+  		return null;
+  	}
   }
 
-  public function setMoney($player, int $amount)
+  public function addMoney($player, int $ammount)
   {
-    if($player instanceof Player)
-    {
-      $player = new EconomyPlayer($this->plugin, $player->getName());
-      $player->setMoney($amount);
-    }
-    else if($player instanceof String)
-    {
-      $player = new EconomyPlayer($this->plugin, $player);
-      $player->setMoney($amount);
-    }
-    else if($player instanceof EconomyPlayer)
-    {
-      $player->setMoney($amount);
-    }
-    else{
-      throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::setMoney() must be type of string or pocketmine\Player");
-    }
+  	if($player instanceof Player)
+  	{
+  		$this->provider->setMoney($player->getName(), $this->provider->getMoney($player->getName()) + $ammount);
+  		return true;
+  	}
+  	elseif(is_string($player))
+  	{
+  		$this->provider->setMoney($player,  $this->provider->getMoney($player) + $ammount);
+  	}
+  	else
+  	{
+  		return false;
+  	}
   }
 
-  public function reduceMoney($player, int $amount)
+  public function reduceMoney($player, int $ammount)
   {
-    if($player instanceof Player)
-    {
-      $player = new EconomyPlayer($this->plugin, $player->getName());
-      $player->subtractMoney($amount);
-    }
-    else if(is_string($player))
-    {
-      $player = new EconomyPlayer($this->plugin, $player);
-      $player->subtractMoney($amount);
-    }
-    else if($player instanceof EconomyPlayer)
-    {
-      $player->subtractMoney($amount);
-    }
-    else{
-      throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::reduceMoney() must be type of string or pocketmine\Player");
-    }
-  }
-
-  public function addMoney($player, int $amount)
-  {
-    if($player instanceof Player)
-    {
-      $player = new EconomyPlayer($this->plugin, $player->getName());
-      $player->addMoney($amount);
-    }
-    else if(is_string($player))
-    {
-      $player = new EconomyPlayer($this->player, $player);
-      $player->addMoney($amount);
-    }
-    else if($player instanceof EconomyPlayer)
-    {
-      $player->addMoney($amount);
-    }
-    else{
-      throw new \InvalidArgumentException("Arugment passed to EconomyPlusAPI::addMoney() must be type of string or pocketmine\Player");
-    }
+  	if($player instanceof Player)
+  	{
+  		$this->provider->setMoney($player->getName(), $this->provider->getMoney($player->getName()) - $ammount);
+  		return true;
+  	}
+  	elseif(is_string($player))
+  	{
+  		$this->provider->setMoney($player->getName(), $this->provider->getMoney($player) - $ammount);
+  		return true;
+  	}
+  	else
+  	{
+  		return false;
+  	}
   }
 }

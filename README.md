@@ -1,9 +1,12 @@
 # EconomyPlus  
+EconomyPlus is an light Economy plugin built for PocketMine-MP (and all PHP7 alts) with many features!
+
 [![Build Status](https://travis-ci.org/ImagicalGamer/EconomyPlus.svg?branch=master)](https://travis-ci.org/ImagicalGamer/EconomyPlus) 
 [![GitLab CI](http://gitlab.com/pogogo007/EconomyPlus/badges/master/build.svg)](https://gitlab.com/pogogo007/EconomyPlus/pipelines?scope=branches)
 
-
-EconomyPlus is an light Economy plugin built for PocketMine-MP (and all PHP7 alts) with many features!
+# Download
+Want to download the latest phar? Get it from [here](https://gitlab.com/Pogogo007/EconomyPlus/pipelines)
+Note: The Download updates every hour
 
 #Commands
 
@@ -14,10 +17,6 @@ EconomyPlus is an light Economy plugin built for PocketMine-MP (and all PHP7 alt
 | /pay | `<player> <amount>` | Pay a Player!
 | /takemoney | `<player> <amount>` | Take Money from a Player! |
 | /topmoney | NA | See the TopMoney Stats! |
-
-# Download
-Want to download the latest phar? Get it from [here](https://gitlab.com/Pogogo007/EconomyPlus/pipelines)
-Note: The Download updates every hour
 
 #Shops
 

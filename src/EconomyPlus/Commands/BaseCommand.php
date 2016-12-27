@@ -1,6 +1,6 @@
 <?php
 
-namespace EconomyPlus\BaseFiles;
+namespace EconomyPlus\Commands;
 
 use EconomyPlus\EconomyPlus;
 use pocketmine\command\Command;

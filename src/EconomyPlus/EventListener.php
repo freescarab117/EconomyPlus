@@ -9,16 +9,8 @@ use pocketmine\Player;
 
 use EconomyPlus\EconomyPlus;
 
-use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerDeathEvent;
-
-use pocketmine\event\block\BlockBreakEvent;
-
-use pocketmine\utils\Config;
-
-use pocketmine\tile\Sign;
-
-use pocketmine\item\enchantment\Enchantment;
 
 /* Copyright (C) ImagicalGamer - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -35,13 +27,11 @@ class EventListener extends PluginBase implements Listener{
     $this->plugin = $plugin;
   }
 
-  public function onDeath(PlayerDeathEvent $event){
-    if($event->getEntity() instanceof Player){
-      if($event->getEntity()->getFinalDamageCause() instanceof Player){
-        $cause = $event->getEntity()->getFinalDamageCause();
-        $player = new EconomyPlayer($this->plugin, $cause->getName());
-        $cause->addMoney($this->plugin->cfg->get("Death-Money"));
-      }
-    }
+  public function onLogin(PlayerPreLoginEvent $event)
+  {
+  	if($this->plugin->provider->getMoney($event->getPlayer()) != null)
+  	{
+  		$this->plugin->provider->setMoney($event->getPlayer(), (int) $this->plugin->config->get("Default-Money"));
+  	}
   }
 }
