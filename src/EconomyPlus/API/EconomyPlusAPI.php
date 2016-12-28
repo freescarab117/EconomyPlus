@@ -83,7 +83,7 @@ class EconomyPlusAPI{
   	}
   	elseif(is_string($player))
   	{
-  		$this->provider->setMoney($player->getName(), $this->provider->getMoney($player) - $ammount);
+  		$this->provider->setMoney($player, $this->provider->getMoney($player) - $ammount);
   		return true;
   	}
   	else
