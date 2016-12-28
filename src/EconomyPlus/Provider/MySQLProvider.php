@@ -27,7 +27,11 @@ class MySQLProvider extends EconomyProvider{
     	return;
     }
     $this->plugin->getLogger()->info("MySQL Connection Successful!");
-    $this->plugin->getLogger()->info("Host Info: " . mysqli_get_host_info($this->connection))
+    $this->plugin->getLogger()->info("Host Info: " . mysqli_get_host_info($this->connection));
+    $this->plugin->getLogger()->info("Creating necessary needed tables.....");
+    $this->makeQuery();
+    $this->plugin->getLogger()->info("All done!");
+
   }
 
   public function __destruct()
@@ -36,4 +40,8 @@ class MySQLProvider extends EconomyProvider{
     $this->plugin->provider = new JsonProvider($this->plugin);
   }
 
+public function makeQuery(){
+    $query = $this->plugin->getResource("query.sql");
+    $this->connection->query(stream_get_contents($query));
+  }
 }

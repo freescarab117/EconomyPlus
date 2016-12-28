@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS EconomyPlus (
+  username VARCHAR(255) PRIMARY KEY,
+  money INT DEFAULT 1000
+);
