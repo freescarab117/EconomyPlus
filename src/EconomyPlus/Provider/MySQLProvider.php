@@ -57,4 +57,53 @@ class MySQLProvider extends EconomyProvider{
     else{
       throw new \InvalidArgumentException("Arugment 1 passed to MySQLProvider::setMoney() must be type of pocketmine\Player");
     }
+  }
+  
+  public function getMoney($player)
+  {
+    if($player instanceof Player)
+    {
+      $result = $this->connection->query("SELECT * FROM EconomyPlus WHERE username = '".$this->connection->escape_string(strtolower($player->getName))."'");
+
+      if($result instanceof \mysqli_result){
+        $data = $result->fetch_assoc();
+        $result->free();
+        if(isset($data["username"]) and strtolower($data["username"]) === $name)
+        {
+          unset($data["username"]);
+          $money = $data["money"]; ??
+          return $money;
+        }
+      }
+      else
+      {
+       $this->plugin->getLogger()->warning("Unable to make connection to MySQL Database!");
+       return false;
+      }
+    }
+    elseif(is_string($player)
+    {
+      $result = $this->connection->query("SELECT * FROM EconomyPlus WHERE username = '".$this->connection->escape_string(strtolower($name))."'");
+
+      if($result instanceof \mysqli_result){
+        $data = $result->fetch_assoc();
+        $result->free();
+        if(isset($data["username"]) and strtolower($data["username"]) === $name)
+        {
+          unset($data["username"]);
+          $money = $data["money"]; ??
+          return $money;
+        }
+      }
+      else
+      {
+       $this->plugin->getLogger()->warning("Unable to make connection to MySQL Database!");
+       return false;
+      }
+    }
+    else
+    {
+      throw new \InvalidArgumentException("Arugment 1 passed to MySQLProvider::getMoney() must be type of pocketmine\Player");
+    }
+  }
 }
