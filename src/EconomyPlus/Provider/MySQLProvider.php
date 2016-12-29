@@ -40,8 +40,21 @@ class MySQLProvider extends EconomyProvider{
     $this->plugin->provider = new JsonProvider($this->plugin);
   }
 
-public function makeQuery(){
+  public function makeQuery(){
     $query = $this->plugin->getResource("query.sql");
     $this->connection->query(stream_get_contents($query));
   }
+  
+  public function setMoney($player, int $ammount)
+  {
+    if($player instanceof Player){
+      $this->connection->query("UPDATE EconomyPlus SET money = $ammount WHERE username = '".strtolower($this->db->escape_string($player->getName()))."'");
+    }
+    elseif(is_string($player))
+    {
+      $this->connection->query("UPDATE EconomyPlus SET money = $ammount WHERE username = '".strtolower($this->db->escape_string($player))."'");
+    }
+    else{
+      throw new \InvalidArgumentException("Arugment 1 passed to MySQLProvider::setMoney() must be type of pocketmine\Player");
+    }
 }
