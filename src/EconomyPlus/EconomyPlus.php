@@ -72,13 +72,13 @@ class EconomyPlus extends PluginBase implements Listener{
 
     //if(strtolower($this->cfg->get("provider")) == "json")
     //{
-      $this->provider = new JsonProvider($this);
+     $this->provider = new JsonProvider($this);
     //}
     /*elseif(strtolower($this->cfg->get("provider")) == "mysql")
     {
       $this->mysql_settings = $this->cfg->get("mysql");
       $this->provider = new MySQLProvider($this, $this->mysql_settings);
-    */}
+    }*/
 
     $this->api = new EconomyPlusAPI($this, $this->provider);
 
