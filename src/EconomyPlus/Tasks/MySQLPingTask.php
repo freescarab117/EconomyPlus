@@ -4,4 +4,3 @@ namespace EconomyPlus\Tasks;
 class MySQLPingTask{
 
 }
-?>
