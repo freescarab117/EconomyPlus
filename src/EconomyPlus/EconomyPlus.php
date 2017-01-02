@@ -36,13 +36,13 @@ use EconomyPlus\Provider\JsonProvider;
 
 class EconomyPlus extends PluginBase implements Listener{
 
-  static $api;
+  protected $api
 
   public $mysql_settings = ["host" => '127.0.0.1', "port" => 3303, "user" => null, "password" => null, "db_name" => null];
 
   public $lang = "";
 
-  protected $provider = "json";
+  protected $provider
 
   public $shop = TextFormat::GRAY . "[" . TextFormat::GREEN . "Shop" . TextFormat::GRAY . "]";
 
@@ -80,7 +80,7 @@ class EconomyPlus extends PluginBase implements Listener{
       $this->provider = new MySQLProvider($this, $this->mysql_settings);
     */}
 
-    static::$api = new EconomyPlusAPI($this, $this->provider);
+    $this->api = new EconomyPlusAPI($this, $this->provider);
 
     $this->shop = str_replace("@", "§", $this->cfg->get("ShopPrefix"));
     $this->sell = str_replace("@", "§", $this->cfg->get("SellPrefix"));
@@ -136,12 +136,12 @@ class EconomyPlus extends PluginBase implements Listener{
 
   public static function getInstance()
   {
-    return static::$api;
+    return $this->api;
   }
 
   public static function getProvider()
   {
-    return static::$provider;
+    return $this->provider;
   }
 
   public function registerListeners()
