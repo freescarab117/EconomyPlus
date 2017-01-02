@@ -36,13 +36,13 @@ use EconomyPlus\Provider\JsonProvider;
 
 class EconomyPlus extends PluginBase implements Listener{
 
-  protected $api
+  protected $api;
 
   public $mysql_settings = ["host" => '127.0.0.1', "port" => 3303, "user" => null, "password" => null, "db_name" => null];
 
   public $lang = "";
 
-  protected $provider
+  protected $provider;
 
   public $shop = TextFormat::GRAY . "[" . TextFormat::GREEN . "Shop" . TextFormat::GRAY . "]";
 
