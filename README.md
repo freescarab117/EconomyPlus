@@ -3,6 +3,7 @@ EconomyPlus is an light Economy plugin built for PocketMine-MP (and all PHP7 alt
 
 [![Build Status](https://travis-ci.org/ImagicalGamer/EconomyPlus.svg?branch=master)](https://travis-ci.org/ImagicalGamer/EconomyPlus) 
 [![GitLab CI](http://gitlab.com/pogogo007/EconomyPlus/badges/master/build.svg)](https://gitlab.com/pogogo007/EconomyPlus/pipelines?scope=branches)
+[![Poggit-CI](https://poggit.pmmp.io/ci.badge/ImagicalGamer/EconomyPlus/EconomyPlus)](https://poggit.pmmp.io/ci/ImagicalGamer/EconomyPlus/EconomyPlus)
 
 # Download
 Want to download the latest phar? Get it from [here](https://gitlab.com/Pogogo007/EconomyPlus/pipelines)
