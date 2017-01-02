@@ -33,12 +33,6 @@ Note: The Download updates every hour
 | :---: | :---: | :---: | :---: |
 | [Shop] | `<item name>` | `<amount>` | `<price>` |
 
-##Permission Shops
-
-| Line1 | Line2 | Line3 | Line4 |
-| :---: | :---: | :---: | :---: |
-| [Perm] | `<price>` | `<perm>` | `<perm cont.>` |
-
 #EconomyPlus Configuration
 
 ```yaml
