@@ -78,17 +78,6 @@ EnableSell: true
 #Select a custom prefix for EconomyPlus sell signs (use @ to replace §)
 SellPrefix: '@7[@bSell@7]'
 
-#Enable EconomyPlus PermissionShop!
-EnablePermShop: true
-# Format:
-# [Perm]
-# Price
-# Perm
-# Perm
-
-#Select a custom prefix for EconomyPlus shop signs (use @ to replace §)
-PermPrefix: '@7[@cPerm@7]'
-
 # Don't edit anything below this line it may break the plugin!
 Version: 1
 AccountsImported: false
