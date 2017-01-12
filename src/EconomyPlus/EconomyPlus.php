@@ -42,7 +42,7 @@ class EconomyPlus extends PluginBase implements Listener{
 
   public $lang = "";
 
-  static $provider
+  static $provider;
 
   public $shop = TextFormat::GRAY . "[" . TextFormat::GREEN . "Shop" . TextFormat::GRAY . "]";
 
