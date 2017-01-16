@@ -80,7 +80,7 @@ class EconomyPlus extends PluginBase implements Listener{
       $this->provider = new MySQLProvider($this, $this->mysql_settings);
     }*/
 
-    $this->api = new EconomyPlusAPI($this, $this->provider);
+    $this->api = new EconomyPlusAPI($this, static::$provider);
 
     $this->shop = str_replace("@", "§", $this->cfg->get("ShopPrefix"));
     $this->sell = str_replace("@", "§", $this->cfg->get("SellPrefix"));
