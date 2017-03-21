@@ -42,7 +42,7 @@ class EconomyPlus extends PluginBase implements Listener{
 
   public $lang = "";
 
-  static $provider;
+  protected $provider;
 
   public $shop = TextFormat::GRAY . "[" . TextFormat::GREEN . "Shop" . TextFormat::GRAY . "]";
 
@@ -72,7 +72,7 @@ class EconomyPlus extends PluginBase implements Listener{
 
     //if(strtolower($this->cfg->get("provider")) == "json")
     //{
-     static::$provider = new JsonProvider($this);
+     $this->provider = new JsonProvider($this);
     //}
     /*elseif(strtolower($this->cfg->get("provider")) == "mysql")
     {
@@ -80,7 +80,7 @@ class EconomyPlus extends PluginBase implements Listener{
       $this->provider = new MySQLProvider($this, $this->mysql_settings);
     }*/
 
-    $this->api = new EconomyPlusAPI($this, static::$provider);
+    $this->api = new EconomyPlusAPI($this, $this->provider);
 
     $this->shop = str_replace("@", "§", $this->cfg->get("ShopPrefix"));
     $this->sell = str_replace("@", "§", $this->cfg->get("SellPrefix"));
@@ -141,7 +141,7 @@ class EconomyPlus extends PluginBase implements Listener{
 
   public static function getProvider()
   {
-    return static::$provider;
+    return $this->provider;
   }
 
   public function registerListeners()
